@@ -2,23 +2,37 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dtos.RenameMeDTO;
 import facades.FacadeExample;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-
-
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Simple CA1 API",
+                version = "0.1",
+                description = "Simple API for use in the CA1 project."
+        ),
+        tags = {
+                @Tag(name = "ca1", description = "The API for CA1")
+        }
+)
 @Path("ca1")
 public class APIResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final FacadeExample FACADE = FacadeExample.getFacadeExample(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
+    @Operation(summary = "Test connection",
+                tags = {"ca1"})
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String demo() {
@@ -27,6 +41,15 @@ public class APIResource {
 
     //    ca1/{number}
     //    Get information about a person (address, hobbies etc.) given a phone number
+    @Operation(summary = "Get information about a person (address, hobbies etc.) given a phone number",
+            tags = {"ca1"},
+            responses = {
+                @ApiResponse(
+                    content = @Content(mediaType = "application/json"/*,schema = @Schema(implementation = PersonDTO.class)*/)),
+                @ApiResponse(responseCode = "200", description = "The requested person"),
+                @ApiResponse(responseCode = "400", description = "Person not found")
+            }
+    )
     @GET
     @Path("{number}")
     @Produces({MediaType.APPLICATION_JSON})
