@@ -14,18 +14,15 @@ import javax.ws.rs.core.Response;
 
 @Path("ca1")
 public class APIResource {
-
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-
     private static final FacadeExample FACADE = FacadeExample.getFacadeExample(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String demo() {
-        return "{\"msg\":\"Hello World\"}";
+        return "{\"msg\":\"Hello World from APIResource\"}";
     }
-
 
     //    ca1/{number}
     //    Get information about a person (address, hobbies etc) given a phone number
@@ -39,33 +36,29 @@ public class APIResource {
 
     //    ca1/{hobbyname}
     //    Get all persons with a given hobby
-    @GET
-    @Path("{hobbyname}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public String getPersonByHobby() {
-        return "{\"msg\":\"Here you get a list of all persons given a hobby\"}";
-    }
-
+//    @GET
+//    @Path("{hobbyname}")
+//    @Produces({MediaType.APPLICATION_JSON})
+//    public String getPersonByHobby() {
+//        return "{\"msg\":\"Here you get a list of all persons given a hobby\"}";
+//    }
 
 //    ca1/{zipCode}
 //    Get all persons living in a given city (i.e. 2800 Lyngby)
 
-
-
 //    ca1/count/{hobbyname}
 //    Get the number of people with a given hobby
-
 
 //    ca1/count/zipcodes
 //    Get a list of all zip codes in Denmark
 
-
 //    ca1/
 //    Create new Persons
 
-
 //    ca1/{id}
 //    Edit Persons
+
+
 
 
 //    @Path("count")
