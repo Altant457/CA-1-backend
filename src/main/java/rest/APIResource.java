@@ -20,43 +20,52 @@ public class APIResource {
     private static final FacadeExample FACADE = FacadeExample.getFacadeExample(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-
-
-
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public String demo() {
         return "{\"msg\":\"Hello World\"}";
     }
 
-    @GET
-    @Path("person")
-    @Produces("application/json")
-    public String test(String input) {
 
-        return "";
+    //    ca1/{number}
+    //    Get information about a person (address, hobbies etc) given a phone number
+    @GET
+    @Path("{number}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getPersonByNumber() {
+        return "{\"msg\":\"Here you get a person with a given phone number\"}";
     }
 
-//    ca1/hobbies
 
-//    ca1/{hobbyname}
+    //    ca1/{hobbyname}
+    //    Get all persons with a given hobby
+    @GET
+    @Path("{hobbyname}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public String getPersonByHobby() {
+        return "{\"msg\":\"Here you get a list of all persons given a hobby\"}";
+    }
+
 
 //    ca1/{zipCode}
-
-//    ca1/cityinfo/all
-
-//    ca1/address/{id}
-
-//    ca1/    create new person
-
-//    ca1/{id} edit person
+//    Get all persons living in a given city (i.e. 2800 Lyngby)
 
 
 
+//    ca1/count/{hobbyname}
+//    Get the number of people with a given hobby
 
 
+//    ca1/count/zipcodes
+//    Get a list of all zip codes in Denmark
 
 
+//    ca1/
+//    Create new Persons
+
+
+//    ca1/{id}
+//    Edit Persons
 
 
 //    @Path("count")
