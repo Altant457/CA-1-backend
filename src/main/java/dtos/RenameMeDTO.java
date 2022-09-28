@@ -6,7 +6,6 @@
 package dtos;
 
 import entities.RenameMe;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +14,10 @@ import java.util.List;
  *
  * @author tha
  */
-@Schema(name = "RenameMe") // makes the class autoconvert into json (supposedly)
 public class RenameMeDTO {
 
-    @Schema(required = false, example = "3")
     private long id;
-    @Schema(required = true, example = "A string")
     private String str1;
-    @Schema(required = true, example = "Another string")
     private String str2;
 
     public RenameMeDTO(String dummyStr1, String dummyStr2) {
