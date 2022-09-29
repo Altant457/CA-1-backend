@@ -1,20 +1,22 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "hobby")
 public class Hobby {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     private String name;
     private String description;
 
     @ManyToMany(mappedBy = "hobbySet")
-    private Set<Person> personSet;
+    private Set<Person> personSet = new LinkedHashSet<>();
 
     public Hobby() {
     }
@@ -55,5 +57,26 @@ public class Hobby {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    public Set<Person> getPersonSet() {
+        return personSet;
+    }
+
+    public void setPersonSet(Set<Person> personSet) {
+        this.personSet = personSet;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hobby hobby = (Hobby) o;
+        return Objects.equals(id, hobby.id) && Objects.equals(name, hobby.name) && Objects.equals(description, hobby.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description);
     }
 }

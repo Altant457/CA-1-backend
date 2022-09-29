@@ -1,20 +1,22 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "address")
 public class Address {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     private String street;
     private String additionalInfo;
 
     @OneToMany (mappedBy = "address")
-    Set<Person> personSet;
+    Set<Person> personSet = new LinkedHashSet<>();
 
     @ManyToOne
     private CityInfo cityInfo;
@@ -51,6 +53,7 @@ public class Address {
         this.id = id;
     }
 
+
     @Override
     public String toString() {
         return "Address{" +
@@ -58,5 +61,18 @@ public class Address {
                 ", street='" + street + '\'' +
                 ", additionalInfo='" + additionalInfo + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(id, address.id) && Objects.equals(street, address.street) && Objects.equals(additionalInfo, address.additionalInfo) && Objects.equals(cityInfo, address.cityInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, street, additionalInfo, cityInfo);
     }
 }
