@@ -14,6 +14,9 @@ public class Person {
     private String firstName;
     private String lastName;
 
+    @ManyToOne
+    private Address address;
+
     @ManyToMany
     private Set<Hobby> hobbySet;
 
