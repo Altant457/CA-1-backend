@@ -1,17 +1,29 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "person")
 public class Person {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     private String email;
     private String firstName;
     private String lastName;
+
+    @ManyToOne
+    private Address address;
+
+    @ManyToMany
+    private Set<Hobby> hobbySet = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "person")
+    private Set<Phone> phone = new LinkedHashSet<>();
 
     public Person() {
     }
@@ -19,6 +31,13 @@ public class Person {
     public Person(String email, String firstName) {
         this.email = email;
         this.firstName = firstName;
+
+    }
+
+    public void addHobbytoHobbySet(Hobby hobby){
+        this.hobbySet.add(hobby);
+        hobby.getPersonSet().add(this);
+
     }
 
     public Long getId() {
@@ -61,5 +80,18 @@ public class Person {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(id, person.id) && Objects.equals(email, person.email) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(address, person.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, firstName, lastName, address);
     }
 }

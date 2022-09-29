@@ -1,18 +1,21 @@
 package entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "city_info")
 public class CityInfo {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     private String zipCode;
     private String city;
+
+    @OneToMany (mappedBy = "cityInfo")
+    private Set<Address> addresses= new LinkedHashSet<>();
 
     public CityInfo() {
     }
