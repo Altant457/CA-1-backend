@@ -4,15 +4,27 @@ import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "city_info")
-public class CityInfo {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
-    private String zipCode;
-    private String city;
+
+
+    @Entity
+    public class CityInfo {
+//        private static final long serialVersionUID = 1L;
+        @Id
+        @Column(length = 4)
+        private String zipCode;
+        @Column(length=35)
+        private String city;
+
+//@Entity
+//@Table(name = "cityinfo")
+//public class CityInfo {
+//
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "id", nullable = false)
+//    private Long id;
+//    private String zipCode;
+//    private String city;
 
     @OneToMany (mappedBy = "cityInfo")
     private Set<Address> addresses= new LinkedHashSet<>();
@@ -41,18 +53,18 @@ public class CityInfo {
         this.city = city;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     @Override
     public String toString() {
         return "CityInfo{" +
-                "id=" + id +
+//                "id=" + id +
                 ", zipCode='" + zipCode + '\'' +
                 ", city='" + city + '\'' +
                 '}';
