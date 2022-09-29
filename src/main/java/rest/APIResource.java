@@ -29,7 +29,8 @@ public class APIResource {
     @Path("number/{number}")
     @Produces({MediaType.APPLICATION_JSON})
     //TODO String number
-    public String getPersonByNumber(@PathParam("number") Long number) {
+//    public String getPersonByNumber(@PathParam("number") Long number) {
+    public String getPersonByNumber(@PathParam("number") String number) {
         try {
             PersonDTO personDTO = FACADE.getPersonByPhone(number);
             return GSON.toJson(personDTO);

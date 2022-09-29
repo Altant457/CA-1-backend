@@ -40,6 +40,36 @@ public class Person {
 
     }
 
+    public void addPhone(Phone phone){
+        this.phone.add(phone);
+        phone.setPerson(this);
+
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public Set<Phone> getPhone() {
+        return phone;
+    }
+
+//    public void setPhone(Set<Phone> phone) {
+//        this.phone = phone;
+//    }
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Set<Hobby> getHobbySet() {
+        return hobbySet;
+    }
+
+    public void setHobbySet(Set<Hobby> hobbySet) {
+        this.hobbySet = hobbySet;
+    }
+
+
     public Long getId() {
         return id;
     }
