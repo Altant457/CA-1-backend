@@ -2,6 +2,8 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.PersonDTO;
+import errorhandling.ExceptionDTO;
 import facades.APIFacade;
 import utils.EMF_Creator;
 
@@ -26,8 +28,16 @@ public class APIResource {
     @GET
     @Path("number/{number}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getPersonByNumber(@PathParam("number") String number) {
-        return String.format("{\"msg\":\"Here you get a person with a given phone number. The number was %s\"}", number);
+    //TODO String number
+    public String getPersonByNumber(@PathParam("number") Long number) {
+        try {
+            PersonDTO personDTO = FACADE.getPersonByPhone(number);
+            return GSON.toJson(personDTO);
+        } catch (Exception e) {
+            ExceptionDTO exceptionDTO = new ExceptionDTO(404, String.format("No person with number %s found", number));
+            return GSON.toJson(exceptionDTO);
+        }
+//        return String.format("{\"msg\":\"Here you get a person with a given phone number. The number was %s\"}", number);
     }
 
 
