@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "person")
@@ -12,6 +13,12 @@ public class Person {
     private String email;
     private String firstName;
     private String lastName;
+
+    @ManyToMany
+    private Set<Hobby> hobbySet;
+
+    @OneToMany(mappedBy = "person")
+    private Set<Phone> phone;
 
     public Person() {
     }

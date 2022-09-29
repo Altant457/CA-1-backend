@@ -13,6 +13,9 @@ public class Phone {
     private String number;
     private String description;
 
+    @ManyToOne
+    private Person person;
+
     public Long getId() {
         return id;
     }

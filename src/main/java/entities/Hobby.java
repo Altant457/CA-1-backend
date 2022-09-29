@@ -1,6 +1,7 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "hobby")
@@ -11,6 +12,9 @@ public class Hobby {
     private Long id;
     private String name;
     private String description;
+
+    @ManyToMany(mappedBy = "hobbySet")
+    private Set<Person> personSet;
 
     public Hobby() {
     }
