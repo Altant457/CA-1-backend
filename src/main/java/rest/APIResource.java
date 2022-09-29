@@ -46,7 +46,7 @@ public class APIResource {
     @Path("{zipCode}")
     @Produces("application/json")
     public String getAllFromCity(@PathParam("zipCode") String zipCode) {
-        return String.format("{\"msg\":\"Here you get a list of all persons (in the db) who lives in a specific city. The given city was %s\"}", zipCode);
+        return String.format("{\"msg\":\"Here you get a list of all persons (in the db) who lives in a specific city. The given zipcode was %s\"}", zipCode);
     }
 
 //    ca1/count/{hobbyname}
@@ -55,7 +55,7 @@ public class APIResource {
     @Path("count/{hobbyname}")
     @Produces("application/json")
     public String getAllWithHobby(@PathParam("hobbyname") String hobbyname) {
-        return String.format("{\"msg\":\"Here you get the number of persons with the given hobby. The given hobby was 5%s\"}", hobbyname);
+        return String.format("{\"msg\":\"Here you get the number of persons with the given hobby. The given hobby was %s\"}", hobbyname);
     }
 
 //    ca1/count/zipcodes     // should the path be changed? It seems weirdly named, when the return value is a list, not a number
@@ -64,7 +64,7 @@ public class APIResource {
     @Path("count/zipcodes")
     @Produces("application/json")
     public String getAllZipcodes() {
-        return "{\"msg\":\"Here you get a list of all the zipcodes in Denmark";
+        return "{\"msg\":\"Here you get a list of all the zipcodes in Denmark\"}";
     }
 
 //    ca1/
