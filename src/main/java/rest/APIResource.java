@@ -73,7 +73,7 @@ public class APIResource {
     @Consumes("application/json")
     @Produces("application/json")
     public String createPerson(String input) { // input is the body of the request, generated in the frontend
-        return "{\"msg\":\"Input is correct, return a person with added id\"";
+        return "{\"msg\":\"Input is correct, return a person with added id\"}";
     }
 
 //    ca1/{id}
@@ -83,7 +83,7 @@ public class APIResource {
     @Consumes("application/json")
     @Produces("application/json")
     public String editPerson(@PathParam("id") String id, String input) {
-        return String.format("{\"msg\":\"Provided a person with id = %s exists, change the person to equal the input\"", id);
+        return String.format("{\"msg\":\"Provided a person with id = %s exists, change the person to equal the input\"}", id);
     }
 
 
