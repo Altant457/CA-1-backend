@@ -2,8 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import facades.FacadeExample;
-
+import facades.APIFacade;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
@@ -13,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 @Path("ca1")
 public class APIResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-    private static final FacadeExample FACADE = FacadeExample.getFacadeExample(EMF);
+    private static final APIFacade FACADE = APIFacade.getInstance(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @GET
