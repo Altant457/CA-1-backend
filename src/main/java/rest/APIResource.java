@@ -24,7 +24,7 @@ public class APIResource {
     //    ca1/{number}
     //    Get information about a person (address, hobbies etc.) given a phone number
     @GET
-    @Path("{number}")
+    @Path("number/{number}")
     @Produces({MediaType.APPLICATION_JSON})
     public String getPersonByNumber(@PathParam("number") String number) {
         return String.format("{\"msg\":\"Here you get a person with a given phone number. The number was %s\"}", number);
@@ -34,7 +34,7 @@ public class APIResource {
     //    ca1/{hobbyname}
     //    Get all persons with a given hobby
     @GET
-    @Path("{hobbyname}")
+    @Path("hobby/{hobbyname}")
     @Produces({MediaType.APPLICATION_JSON})
     public String getPersonByHobby(@PathParam("hobbyname") String hobbyname) {
         return String.format("{\"msg\":\"Here you get a list of all persons given a hobby. The hobby given was %s\"}", hobbyname);
