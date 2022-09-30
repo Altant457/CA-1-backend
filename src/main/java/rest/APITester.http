@@ -1,0 +1,19 @@
+### GET person with the phone number 45454545
+GET http://localhost:8080/CA1/api/ca1/person/phone/45454545
+accept:application/json
+
+### GET all persons that do the hobby 3D-udskrivning
+GET http://localhost:8080/CA1/api/ca1/person/hobby/3D-udskrivning
+accept:application/json
+
+### GET a list of all zipcodes in denmark
+GET http://localhost:8080/CA1/api/ca1/zipcodes
+accept:application/json
+
+### GET all persons that live in the city with zipcode 3720
+GET http://localhost:8080/CA1/api/ca1/person/city/3720
+accept:application/json
+
+### GET a count of all persons doing the hobby 3D-udskrivning
+GET http://localhost:8080/CA1/api/ca1/hobby/3D-udskrivning/count
+accept:application/json

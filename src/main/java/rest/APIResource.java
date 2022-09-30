@@ -26,7 +26,7 @@ public class APIResource {
         return "{\"msg\":\"Hello World from APIResource\"}";
     }
 
-    //    ca1/{number}
+    //    ca1/person/phone/{number}
     //    Get information about a person (address, hobbies etc.) given a phone number
     @GET
     @Path("person/phone/{number}")
@@ -42,7 +42,7 @@ public class APIResource {
     }
 
 
-    //    ca1/{hobbyname}
+    //    ca1/person/hobby/{hobbyname}
     //    Get all persons with a given hobby
     @GET
     @Path("person/hobby/{hobbyname}")
@@ -57,7 +57,7 @@ public class APIResource {
         }
     }
 
-//    ca1/{zipCode}
+//    ca1/person/city/{zipCode}
 //    Get all persons living in a given city (i.e. 2800 Lyngby)
     @GET
     @Path("/person/city/{zipCode}")
@@ -72,7 +72,7 @@ public class APIResource {
         }
     }
 
-//    ca1/count/{hobbyname}
+//    ca1/hobby/{hobbyname}/count
 //    Get the number of people with a given hobby
     @GET
     @Path("hobby/{hobbyname}/count")
@@ -87,8 +87,11 @@ public class APIResource {
         }
     }
 
-//    ca1/count/zipcodes     // should the path be changed? It seems weirdly named, when the return value is a list, not a number
+//    ca1/zipcodes
 //    Get a list of all zip codes in Denmark
+// should the path be changed? It seems weirdly named, when the return value is a list, not a number
+//    Thorbjørn: Jeg tænker at denne ville følge Jons logik: ca1/zipCode
+//    ved kald af typen getAll ser det også ud til at han bruger ental og hvis der ikke står noget efter / er all underforstået
     @GET
     @Path("zipcodes")
     @Produces("application/json")
@@ -97,7 +100,7 @@ public class APIResource {
         return GSON.toJson(zipCodes);
     }
 
-//    ca1/
+//    ca1/person
 //    Create new Persons
     @POST
     @Path("person")
@@ -107,7 +110,7 @@ public class APIResource {
         return "{\"msg\":\"Input is correct, return a person with added id\"}";
     }
 
-//    ca1/{id}
+//    ca1/person/{id}
 //    Edit Persons
     @PUT
     @Path("person/{id}")
