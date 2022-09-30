@@ -2,12 +2,14 @@ package facades;
 
 import dtos.FullPersonDTO;
 import dtos.PersonDTO;
+import entities.Hobby;
 import entities.Person;
 
 import javax.enterprise.inject.Typed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class APIFacade {
     private static APIFacade instance;
@@ -44,4 +46,15 @@ public class APIFacade {
         return personDTO;
 
     }
+
+    public List<FullPersonDTO> getPersonByHobby(String hobbyName){
+    EntityManager em = emf.createEntityManager();
+    TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbySet h WHERE h.name = :hobbyName", Person.class);
+    query.setParameter("hobbyName", hobbyName);
+    List<FullPersonDTO> fullPersonDTOList = FullPersonDTO.getDTOList(query.getResultList());
+
+    List<FullPersonDTO> fullPersonDTOList;
+
+    }
+
 }

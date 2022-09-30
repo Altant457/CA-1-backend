@@ -6,6 +6,7 @@ import entities.Phone;
 
 import java.io.Serializable;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -32,6 +33,10 @@ public class FullPersonDTO implements Serializable {
                                           person.getAddress().getCityInfo().getCity());
         person.getHobbySet().forEach(hobby -> this.hobbySet.add(new HobbyDTO(hobby)));
         person.getPhone().forEach(phone -> this.phones.add(new PhoneDTO(phone)));
+    }
+
+    public static List<FullPersonDTO> getDTOList(List<Person> resultList) {
+
     }
 
     public Long getId() {
