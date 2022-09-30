@@ -46,7 +46,7 @@ public class APIResource {
     @GET
     @Path("person/hobby/{hobbyname}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getPersonByHobby(@PathParam("hobbyname") String hobbyname) {
+    public String getPersonsByHobby(@PathParam("hobbyname") String hobbyname) {
         return String.format("{\"msg\":\"Here you get a list of all persons given a hobby. The hobby given was %s\"}", hobbyname);
     }
 

@@ -5,10 +5,7 @@ import entities.Person;
 import entities.Phone;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A DTO for the {@link entities.Person} entity
@@ -35,7 +32,10 @@ public class FullPersonDTO implements Serializable {
         person.getPhone().forEach(phone -> this.phones.add(new PhoneDTO(phone)));
     }
 
-    public static List<FullPersonDTO> getDTOList(List<Person> resultList) {
+    public static List<FullPersonDTO> getDTOList(List<Person> personList) {
+        List<FullPersonDTO> fullPersonDTOList = new ArrayList<>();
+        personList.forEach(person -> fullPersonDTOList.add(new FullPersonDTO(person)));
+        return fullPersonDTOList;
 
     }
 

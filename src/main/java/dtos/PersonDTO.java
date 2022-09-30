@@ -2,6 +2,8 @@ package dtos;
 
 import entities.Person;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class PersonDTO {
@@ -15,6 +17,12 @@ public class PersonDTO {
         this.email = person.getEmail();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
+    }
+
+    public static List<PersonDTO> getDTOList(List<Person> personList) {
+        List<PersonDTO> personDTOList = new ArrayList<>();
+        personList.forEach(person -> personDTOList.add(new PersonDTO(person)));
+        return personDTOList;
     }
 
     public Long getId() {
