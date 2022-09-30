@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.FullPersonDTO;
 import dtos.PersonDTO;
 import errorhandling.ExceptionDTO;
 import facades.APIFacade;
@@ -26,25 +27,24 @@ public class APIResource {
     //    ca1/{number}
     //    Get information about a person (address, hobbies etc.) given a phone number
     @GET
-    @Path("number/{number}")
+    @Path("person/phone/{number}")
     @Produces({MediaType.APPLICATION_JSON})
     //TODO String number
-    public String getPersonByNumber(@PathParam("number") Long number) {
+    public String getPersonByNumber(@PathParam("number") String number) {
         try {
-            PersonDTO personDTO = FACADE.getPersonByPhone(number);
+            FullPersonDTO personDTO = FACADE.getPersonByPhone(number);
             return GSON.toJson(personDTO);
         } catch (Exception e) {
             ExceptionDTO exceptionDTO = new ExceptionDTO(404, String.format("No person with number %s found", number));
             return GSON.toJson(exceptionDTO);
         }
-//        return String.format("{\"msg\":\"Here you get a person with a given phone number. The number was %s\"}", number);
     }
 
 
     //    ca1/{hobbyname}
     //    Get all persons with a given hobby
     @GET
-    @Path("hobby/{hobbyname}")
+    @Path("person/hobby/{hobbyname}")
     @Produces({MediaType.APPLICATION_JSON})
     public String getPersonByHobby(@PathParam("hobbyname") String hobbyname) {
         return String.format("{\"msg\":\"Here you get a list of all persons given a hobby. The hobby given was %s\"}", hobbyname);
@@ -53,7 +53,7 @@ public class APIResource {
 //    ca1/{zipCode}
 //    Get all persons living in a given city (i.e. 2800 Lyngby)
     @GET
-    @Path("{zipCode}")
+    @Path("/person/city{zipCode}")
     @Produces("application/json")
     public String getAllFromCity(@PathParam("zipCode") String zipCode) {
         return String.format("{\"msg\":\"Here you get a list of all persons (in the db) who lives in a specific city. The given zipcode was %s\"}", zipCode);
@@ -62,7 +62,7 @@ public class APIResource {
 //    ca1/count/{hobbyname}
 //    Get the number of people with a given hobby
     @GET
-    @Path("count/{hobbyname}")
+    @Path("hobby/{hobbyname}/count")
     @Produces("application/json")
     public String getAllWithHobby(@PathParam("hobbyname") String hobbyname) {
         return String.format("{\"msg\":\"Here you get the number of persons with the given hobby. The given hobby was %s\"}", hobbyname);
@@ -71,7 +71,7 @@ public class APIResource {
 //    ca1/count/zipcodes     // should the path be changed? It seems weirdly named, when the return value is a list, not a number
 //    Get a list of all zip codes in Denmark
     @GET
-    @Path("count/zipcodes")
+    @Path("zipcodes")
     @Produces("application/json")
     public String getAllZipcodes() {
         return "{\"msg\":\"Here you get a list of all the zipcodes in Denmark\"}";
@@ -80,6 +80,7 @@ public class APIResource {
 //    ca1/
 //    Create new Persons
     @POST
+    @Path("person")
     @Consumes("application/json")
     @Produces("application/json")
     public String createPerson(String input) { // input is the body of the request, generated in the frontend
@@ -89,7 +90,7 @@ public class APIResource {
 //    ca1/{id}
 //    Edit Persons
     @PUT
-    @Path("{id}")
+    @Path("person/{id}")
     @Consumes("application/json")
     @Produces("application/json")
     public String editPerson(@PathParam("id") String id, String input) {

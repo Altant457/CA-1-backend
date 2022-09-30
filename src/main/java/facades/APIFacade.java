@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.FullPersonDTO;
 import dtos.PersonDTO;
 import entities.Person;
 
@@ -31,12 +32,14 @@ public class APIFacade {
     // create person
 
     //TODO String phoneNumber
-    public PersonDTO getPersonByPhone(Long phoneNumber) {
+//    public PersonDTO getPersonByPhone(Long phoneNumber) {
+    public FullPersonDTO getPersonByPhone(String phoneNumber) {
         EntityManager em = emf.createEntityManager();
         //TODO join med telfonnummer osv
-        TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.id = ?1", Person.class);
-        query.setParameter(1, phoneNumber);
-        PersonDTO personDTO = new PersonDTO(query.getSingleResult());
+//        TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.id = ?1", Person.class);
+        TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.phone ph WHERE ph.number= :phoneNumber", Person.class);
+        query.setParameter("phoneNumber", phoneNumber);
+        FullPersonDTO personDTO = new FullPersonDTO(query.getSingleResult());
         em.close();
         return personDTO;
 
