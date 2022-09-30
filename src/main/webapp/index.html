@@ -418,14 +418,14 @@
     </tr>
     <tr class="c15">
         <td class="c5" colspan="1" rowspan="1"><p class="c6"><span class="c26">GET</span></p></td>
-        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c3">/tomcat/api/ca1/number/{number}</span></p></td>
+        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c3">/tomcat/CA1/api/ca1/person/phone/{number}</span></p></td>
         <td class="c1" colspan="1" rowspan="1"><p class="c11 c7"><span class="c0"></span></p></td>
         <td class="c4" colspan="1" rowspan="1"><p class="c11"><span class="c0">person with full info (3)</span></p></td>
         <td class="c4" colspan="1" rowspan="1"><p class="c11"><span class="c0">(e1)</span></p></td>
     </tr>
     <tr class="c15">
         <td class="c5" colspan="1" rowspan="1"><p class="c6"><span class="c16">GET</span></p></td>
-        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/api/ca1/hobby/{hobbyname}</span></p>
+        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/CA1/api/ca1/person/hobby/{hobbyname}</span></p>
         </td>
         <td class="c1" colspan="1" rowspan="1"><p class="c11 c7"><span class="c0"></span></p></td>
         <td class="c4" colspan="1" rowspan="1"><p class="c11"><span class="c0">[person, person, ...] (2)</span></p></td>
@@ -433,14 +433,14 @@
     </tr>
     <tr class="c15">
         <td class="c5" colspan="1" rowspan="1"><p class="c6"><span class="c16">GET</span></p></td>
-        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/api/ca1/{zipCode}</span></p></td>
+        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/CA1/api/ca1/person/city/{zipCode}</span></p></td>
         <td class="c1" colspan="1" rowspan="1"><p class="c11 c7"><span class="c0"></span></p></td>
         <td class="c4" colspan="1" rowspan="1"><p class="c11"><span class="c0">[person, person, ...] (2)</span></p></td>
         <td class="c4" colspan="1" rowspan="1"><p class="c11"><span class="c0">(e3)</span></p></td>
     </tr>
     <tr class="c15">
         <td class="c5" colspan="1" rowspan="1"><p class="c6"><span class="c16">GET</span></p></td>
-        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/api/ca1/count/{hobbyname}</span>
+        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/CA1/api/ca1/hobby/{hobbyname}/count</span>
         </p></td>
         <td class="c1" colspan="1" rowspan="1"><p class="c11 c7"><span class="c0"></span></p></td>
         <td class="c4" colspan="1" rowspan="1"><p class="c11"><span class="c0">count (5)</span></p></td>
@@ -448,7 +448,7 @@
     </tr>
     <tr class="c15">
         <td class="c5" colspan="1" rowspan="1"><p class="c6"><span class="c16">GET</span></p></td>
-        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/api/ca1/count/zipcodes</span></p>
+        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/CA1/api/ca1/zipcodes</span></p>
         </td>
         <td class="c1" colspan="1" rowspan="1"><p class="c11 c7"><span class="c0"></span></p></td>
         <td class="c4" colspan="1" rowspan="1"><p class="c11"><span class="c3">[</span><span
@@ -458,21 +458,21 @@
     </tr>
     <tr class="c15">
         <td class="c5" colspan="1" rowspan="1"><p class="c6"><span class="c16">POST</span></p></td>
-        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/api/ca1/</span></p></td>
+        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/CA1/api/ca1/person</span></p></td>
         <td class="c1" colspan="1" rowspan="1"><p class="c11"><span class="c0">person (2) without id</span></p></td>
         <td class="c4" colspan="1" rowspan="1"><p class="c11 c7"><span class="c0"></span></p></td>
         <td class="c4" colspan="1" rowspan="1"><p class="c11"><span class="c0">(e4)</span></p></td>
     </tr>
     <tr class="c15">
         <td class="c5" colspan="1" rowspan="1"><p class="c6"><span class="c16">PUT</span></p></td>
-        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/api/ca1/{id}</span></p></td>
+        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/CA1/api/ca1/person/{id}</span></p></td>
         <td class="c1" colspan="1" rowspan="1"><p class="c11"><span class="c0">person (2) without id</span></p></td>
         <td class="c4" colspan="1" rowspan="1"><p class="c11"><span class="c0">person (2)</span></p></td>
         <td class="c4" colspan="1" rowspan="1"><p class="c11 c7"><span class="c0"></span></p></td>
     </tr>
     <tr class="c15">
         <td class="c5" colspan="1" rowspan="1"><p class="c6"><span class="c16">DELETE</span></p></td>
-        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/api/ca1/address/{id}</span></p>
+        <td class="c13" colspan="1" rowspan="1"><p class="c6"><span class="c0">/tomcat/CA1/api/ca1/person/{id}</span></p>
         </td>
         <td class="c1" colspan="1" rowspan="1"><p class="c11 c7"><span class="c0"></span></p></td>
         <td class="c4" colspan="1" rowspan="1"><p class="c11"><span class="c0">msg (7)</span></p></td>
