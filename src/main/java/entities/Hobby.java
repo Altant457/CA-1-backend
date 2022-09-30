@@ -7,13 +7,16 @@ import java.util.Set;
 
 @Entity
 @Table(name = "hobby")
-public class Hobby {
+public class
+Hobby {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     private String name;
-    private String description;
+    private String wikiLink;
+    private String category;
+    private String type;
 
     @ManyToMany(mappedBy = "hobbySet")
     private Set<Person> personSet = new LinkedHashSet<>();
@@ -21,9 +24,12 @@ public class Hobby {
     public Hobby() {
     }
 
-    public Hobby(String name, String description) {
+
+    public Hobby(String name, String wikiLink, String category, String type) {
         this.name = name;
-        this.description = description;
+        this.wikiLink = wikiLink;
+        this.category = category;
+        this.type = type;
     }
 
     public String getName() {
@@ -34,12 +40,29 @@ public class Hobby {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+
+    public String getWikiLink() {
+        return wikiLink;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setWikiLink(String wikiLink) {
+        this.wikiLink = wikiLink;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Long getId() {
@@ -55,7 +78,10 @@ public class Hobby {
         return "Hobby{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
+                ", wikiLink='" + wikiLink + '\'' +
+                ", category='" + category + '\'' +
+                ", type='" + type + '\'' +
+                ", personSet=" + personSet +
                 '}';
     }
 
@@ -72,11 +98,11 @@ public class Hobby {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Hobby hobby = (Hobby) o;
-        return Objects.equals(id, hobby.id) && Objects.equals(name, hobby.name) && Objects.equals(description, hobby.description);
+        return Objects.equals(id, hobby.id) && Objects.equals(name, hobby.name) && Objects.equals(wikiLink, hobby.wikiLink);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description);
+        return Objects.hash(id, name, wikiLink);
     }
 }

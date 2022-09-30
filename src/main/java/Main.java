@@ -16,7 +16,7 @@ public class Main {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         Person person = new Person("emailadressen", "poul");
-        Hobby hobby1 = new Hobby("ringridning", "hurtigt");
+        Hobby hobby1 = new Hobby("ringridning", "wiki", "cat", "type");
         person.addHobbytoHobbySet(hobby1);
         em.persist(person);
         em.persist(hobby1);
