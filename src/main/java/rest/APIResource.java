@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.FullPersonDTO;
 import dtos.PersonDTO;
 import errorhandling.ExceptionDTO;
 import facades.APIFacade;
@@ -32,7 +33,7 @@ public class APIResource {
 //    public String getPersonByNumber(@PathParam("number") Long number) {
     public String getPersonByNumber(@PathParam("number") String number) {
         try {
-            PersonDTO personDTO = FACADE.getPersonByPhone(number);
+            FullPersonDTO personDTO = FACADE.getPersonByPhone(number);
             return GSON.toJson(personDTO);
         } catch (Exception e) {
             ExceptionDTO exceptionDTO = new ExceptionDTO(404, String.format("No person with number %s found", number));

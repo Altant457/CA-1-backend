@@ -1,7 +1,6 @@
+import dtos.FullPersonDTO;
 import dtos.PersonDTO;
-import entities.Hobby;
-import entities.Person;
-import entities.Phone;
+import entities.*;
 import facades.APIFacade;
 
 import javax.persistence.*;
@@ -21,8 +20,12 @@ public class Main {
         Person person = new Person("emailadressen", "poul");
         Hobby hobby1 = new Hobby("ringridning", "hurtigt");
         Phone phone1 = new Phone("45454545", "hjemmetelefon");
+        CityInfo cityInfo1 = em.find(CityInfo.class, "3720");
+        Address address1 = new Address("some street", "th", cityInfo1);
+        person.setAddress(address1);
         person.addHobbytoHobbySet(hobby1);
         person.addPhone(phone1);
+        em.persist(address1);
         em.persist(person);
         em.persist(hobby1);
         em.persist(phone1);
@@ -31,8 +34,8 @@ public class Main {
         em.close();
 
         APIFacade facade = APIFacade.getInstance(emf);
-        PersonDTO personDTO = facade.getPersonByPhone("45454545");
-        System.out.println("personen hedder med nummer 45454545 hedder "+ personDTO.getFirstName());
+        FullPersonDTO fullPersonDTO = facade.getPersonByPhone("45454545");
+        System.out.println("personen hedder med nummer 45454545 hedder "+ fullPersonDTO.getFirstName());
         emf.close();
     }
 }
