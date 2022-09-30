@@ -125,7 +125,7 @@ public class FullPersonDTO implements Serializable {
 
         public HobbyDTO(Hobby hobby) {
             this.name = hobby.getName();
-            this.description = hobby.getDescription();
+            this.description = hobby.getWikiLink();
         }
 
         public String getName() {
