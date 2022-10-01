@@ -116,10 +116,10 @@ public class APIResource {
             PersonDTO personDTO = new PersonDTO(createdPerson);
             return GSON.toJson(personDTO);
         } else {
-            StringBuilder msg = new StringBuilder();
-            if (Objects.equals(newPerson.getFirstName(), "")) msg.append("Field \"First name\" is required.");
-            if (Objects.equals(newPerson.getLastName(), "")) msg.append("Field \"Last name\" is required.");
-            if (Objects.equals(newPerson.getEmail(), "")) msg.append("Field \"Email\" is required.");
+            List<String> msg = new ArrayList<>();
+            if (Objects.equals(newPerson.getFirstName(), "")) msg.add("Field \"First name\" is required. ");
+            if (Objects.equals(newPerson.getLastName(), "")) msg.add("Field \"Last name\" is required. ");
+            if (Objects.equals(newPerson.getEmail(), "")) msg.add("Field \"Email\" is required. ");
             ExceptionDTO exceptionDTO = new ExceptionDTO(400, String.join("\n", msg)); // does JSON do newlines?
             return GSON.toJson(exceptionDTO);
         }
