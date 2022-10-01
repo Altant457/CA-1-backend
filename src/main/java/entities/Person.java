@@ -22,13 +22,13 @@ public class Person {
     @ManyToMany
     private Set<Hobby> hobbySet = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private Set<Phone> phone = new LinkedHashSet<>();
 
     public Person() {
     }
 
-    public Person(String email, String firstName) {
+    public Person(String email, String firstName, String lastName) {
         this.email = email;
         this.firstName = firstName;
 

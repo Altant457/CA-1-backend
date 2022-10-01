@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import dtos.FullPersonDTO;
 import dtos.PersonsDTO;
 import dtos.ZipcodesDTO;
+import entities.Person;
 import errorhandling.ExceptionDTO;
 import facades.APIFacade;
 import utils.EMF_Creator;
@@ -103,7 +104,9 @@ public class APIResource {
     @Path("person")
     @Consumes("application/json")
     @Produces("application/json")
-    public String createPerson(String person) { // input is the body of the request, generated in the frontend
+    public String createPerson(String personJSON) { // input is the body of the request, generated in the frontend
+        Person newPerson = GSON.fromJson(personJSON, Person.class);
+        Person createdPerson = FACADE.createPerson(newPerson);
         return "{\"msg\":\"Input is correct, return a person with added id\"}";
     }
 

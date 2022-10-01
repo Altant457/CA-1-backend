@@ -3,10 +3,7 @@ package facades;
 import dtos.FullPersonDTO;
 import dtos.PersonDTO;
 import dtos.ZipcodesDTO;
-import entities.CityInfo;
-import entities.Hobby;
-import entities.Person;
-import entities.Phone;
+import entities.*;
 
 import javax.enterprise.inject.Typed;
 import javax.persistence.EntityManager;
@@ -75,18 +72,29 @@ public class APIFacade {
         return new ZipcodesDTO(query.getResultList());
     }
 
-    public Person createPerson(String name, String email, Phone phone) {
+    // newPerson contains fName, lName and email, according to api doc
+    // maybe they should have a phone number as well? - Marcus
+    public Person createPerson(Person newPerson) {
         EntityManager em = getEntityManager();
         try {
-//            if (getEmployeesByName(name).size() > 0) {
-//                throw new WebApplicationException("Employee with name: " + name + " exists already.");
-//            }
-            Person newPerson = new Person(name, email);
+            List<Person> personList = em.createQuery("SELECT p FROM Person p WHERE p.email = :email", Person.class)
+                            .setParameter("email", newPerson.getEmail()).getResultList();
+            if (personList.size() > 0) {
+                throw new WebApplicationException(String.format("Person with email \"%s\" exists already.", newPerson.getEmail()));
+            }
             em.getTransaction().begin();
+            List<Address> addresses = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.cityInfo.zipCode = :zipCode", Address.class)
+                    .setParameter("street", newPerson.getAddress().getStreet())
+                    .setParameter("zipCode", newPerson.getAddress().getCityInfo().getZipCode())
+                    .getResultList();
+            if (addresses.size() > 0) {
+                newPerson.setAddress(addresses.get(0));
+                em.merge(addresses.get(0));
+            }
+            em.persist(newPerson.getAddress());
             em.persist(newPerson);
             em.getTransaction().commit();
             return newPerson;
-
         } finally {
             em.close();
         }

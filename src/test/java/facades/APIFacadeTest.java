@@ -44,9 +44,9 @@ class APIFacadeTest {
         em.createQuery("delete from Person").executeUpdate();
         em.createQuery("delete from Address").executeUpdate();
 
-        p1 = new Person("Testperson1", "testemail");
-        p2 = new Person("Testperson2", "testemail2");
-        p3 = new Person("Testperson3", "testemail3");
+        p1 = new Person("testemail1", "Test", "Person1");
+        p2 = new Person("testemail2", "Test", "Person2");
+        p3 = new Person("testemail3", "Test", "Person3");
         a1 = new Address("some street", "th", em.find(CityInfo.class, "3720"));
         ph1 = new Phone("12345678", "hjemmetelefon");
         h1 = em.find(Hobby.class, 1L);
@@ -113,5 +113,20 @@ class APIFacadeTest {
     void getAllZipcodes() {
         ZipcodesDTO actual = facade.getAllZipcodes();
         assertThat(actual.getAll(), hasItems("3720", "0960", "470", "186", "5800"));
+    }
+
+    @Test
+    void createPerson() {
+        EntityManager em = emf.createEntityManager();
+        Person newPerson = new Person("testMail", "fName", "lName");
+        Phone newPhone = new Phone("87654321", "testPhone");
+        Address newAddress = new Address("new street", "up", em.find(CityInfo.class, "3720"));
+        newPerson.addPhone(newPhone);
+        newPerson.setAddress(newAddress);
+        newPerson = facade.createPerson(newPerson);
+        FullPersonDTO actual = facade.getPersonByPhone(newPhone.getNumber());
+        FullPersonDTO expected = new FullPersonDTO(newPerson);
+
+        assertEquals(expected, actual);
     }
 }
