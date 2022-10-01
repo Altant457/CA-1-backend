@@ -50,26 +50,34 @@ public class APIFacade {
         EntityManager em = getEntityManager();
         TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbySet h WHERE h.name = :hobbyName", Person.class);
         query.setParameter("hobbyName", hobbyName);
-        return PersonDTO.getDTOList(query.getResultList());
+        List<PersonDTO> personDTOList = PersonDTO.getDTOList(query.getResultList());
+        em.close();
+        return personDTOList;
 
     }
 
     public List<PersonDTO> getAllFromCity(String zipCode) {
         EntityManager em = getEntityManager();
         TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.cityInfo.zipCode = :zipCode", Person.class);
-        return PersonDTO.getDTOList(query.setParameter("zipCode", zipCode).getResultList());
+        List<PersonDTO> personDTOList = PersonDTO.getDTOList(query.setParameter("zipCode", zipCode).getResultList());
+        em.close();
+        return personDTOList;
     }
 
     public int getNumberWithHobby(String hobbyname) {
         EntityManager em = getEntityManager();
         TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbySet h WHERE h.name = :hobbyName", Person.class);
-        return query.setParameter("hobbyName", hobbyname).getResultList().size();
+        int count = query.setParameter("hobbyName", hobbyname).getResultList().size();
+        em.close();
+        return count;
     }
 
     public ZipcodesDTO getAllZipcodes() {
         EntityManager em = getEntityManager();
         TypedQuery<String> query = em.createQuery("SELECT c.zipCode FROM CityInfo c", String.class);
-        return new ZipcodesDTO(query.getResultList());
+        ZipcodesDTO zipcodes = new ZipcodesDTO(query.getResultList());
+        em.close();
+        return zipcodes;
     }
 
     // newPerson contains fName, lName and email, according to api doc
