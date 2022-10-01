@@ -19,8 +19,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 class APIResourceTest {
@@ -94,6 +98,9 @@ class APIResourceTest {
 
         p1.addHobbytoHobbySet(h1);
         p2.addHobbytoHobbySet(h2);
+        p2.addHobbytoHobbySet(h1);
+        p3.addHobbytoHobbySet(h2);
+        p3.addHobbytoHobbySet(h1);
 
         em.persist(a1);
         em.persist(ph1);
@@ -135,18 +142,46 @@ class APIResourceTest {
                 .statusCode(200)
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("firstName",equalTo(p3DTO.getFirstName()));
-////                .body("children", hasItems(hasEntry("name","Joseph"),hasEntry("name","Alberta")));
+                .body("firstName", equalTo(p3DTO.getFirstName()));
 
     }
 
 
     @Test
     void getPersonsByHobby() {
+        List<PersonDTO> personDTOS;
+        personDTOS =
+                given()
+                        .contentType("application/json")
+                        .pathParam("hobbyName", h1.getName())
+                        .when()
+                        .get("ca1/person/hobby/{hobbyName}")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK_200.getStatusCode())
+                        .extract().body().jsonPath().getList("all", PersonDTO.class);
+
+        assertThat(personDTOS, containsInAnyOrder(p1DTO, p2DTO, p3DTO));
+
     }
 
     @Test
     void getAllFromCity() {
+        List<PersonDTO> personDTOS;
+        personDTOS =
+                given()
+                        .contentType("application/json")
+                        .pathParam("zipCode", p2.getAddress().getCityInfo().getZipCode())
+                        .when()
+                        .get("ca1/person/city/{zipCode}")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK_200.getStatusCode())
+                        .extract().body().jsonPath().getList("all", PersonDTO.class);
+
+        assertThat(personDTOS, containsInAnyOrder(p2DTO, p3DTO));
+
+
     }
 
     @Test
@@ -159,11 +194,24 @@ class APIResourceTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("count", equalTo("2"));
+                .body("count", equalTo("3"));
     }
 
     @Test
     void getAllZipcodes() {
+        List<String> zipCodes;
+        zipCodes = given()
+                .contentType("application/json")
+                .when()
+                .get("ca1/zipcodes")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .extract().body().jsonPath().getList("all", String.class);
+
+        assertThat(zipCodes, hasItems("3720", "0960", "470", "186", "5800"));
+
+
     }
 
     @Test
