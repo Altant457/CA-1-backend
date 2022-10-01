@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.FullPersonDTO;
+import dtos.PersonDTO;
 import dtos.PersonsDTO;
 import dtos.ZipcodesDTO;
 import entities.Person;
@@ -13,7 +14,9 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Path("ca1")
 public class APIResource {
@@ -106,8 +109,21 @@ public class APIResource {
     @Produces("application/json")
     public String createPerson(String personJSON) { // input is the body of the request, generated in the frontend
         Person newPerson = GSON.fromJson(personJSON, Person.class);
-        Person createdPerson = FACADE.createPerson(newPerson);
-        return "{\"msg\":\"Input is correct, return a person with added id\"}";
+        if (!Objects.equals(newPerson.getEmail(), "")
+                || !Objects.equals(newPerson.getFirstName(), "")
+                || !Objects.equals(newPerson.getLastName(), "")) {
+            Person createdPerson = FACADE.createPerson(newPerson);
+            PersonDTO personDTO = new PersonDTO(createdPerson);
+            return GSON.toJson(personDTO);
+        } else {
+            StringBuilder msg = new StringBuilder();
+            if (Objects.equals(newPerson.getFirstName(), "")) msg.append("Field \"First name\" is required.");
+            if (Objects.equals(newPerson.getLastName(), "")) msg.append("Field \"Last name\" is required.");
+            if (Objects.equals(newPerson.getEmail(), "")) msg.append("Field \"Email\" is required.");
+            ExceptionDTO exceptionDTO = new ExceptionDTO(400, String.join("\n", msg)); // does JSON do newlines?
+            return GSON.toJson(exceptionDTO);
+        }
+
     }
 
 //    ca1/{id}
