@@ -90,8 +90,9 @@ public class APIFacade {
             if (addresses.size() > 0) {
                 newPerson.setAddress(addresses.get(0));
                 em.merge(addresses.get(0));
+            } else {
+                em.persist(newPerson.getAddress());
             }
-            em.persist(newPerson.getAddress());
             em.persist(newPerson);
             em.getTransaction().commit();
             return newPerson;
