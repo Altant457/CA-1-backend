@@ -15,15 +15,18 @@ public class FullPersonDTO implements Serializable {
     private final String email;
     private final String firstName;
     private final String lastName;
-    private final AddressDTO fullAddress;
-    private final Set<HobbyDTO> hobbySet = new LinkedHashSet<>();
     private final Set<PhoneDTO> phones = new LinkedHashSet<>();
+    private final AddressDTO fullAddress;
+    private final Set<HobbyDTO> hobbies = new LinkedHashSet<>();
 
     public FullPersonDTO(Person person) {
         this.id = person.getId();
         this.email = person.getEmail();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
+        if (!person.getPhone().isEmpty()) {
+            person.getPhone().forEach(phone -> this.phones.add(new PhoneDTO(phone)));
+        }
         if (person.getAddress() != null) {
             this.fullAddress = new AddressDTO(person.getAddress().getStreet(),
                                               person.getAddress().getAdditionalInfo(),
@@ -32,11 +35,8 @@ public class FullPersonDTO implements Serializable {
         } else {
             this.fullAddress = null;
         }
-        if (person.getHobbySet().isEmpty()) {
-            person.getHobbySet().forEach(hobby -> this.hobbySet.add(new HobbyDTO(hobby)));
-        }
-        if (person.getPhone().isEmpty()) {
-            person.getPhone().forEach(phone -> this.phones.add(new PhoneDTO(phone)));
+        if (!person.getHobbies().isEmpty()) {
+            person.getHobbies().forEach(hobby -> this.hobbies.add(new HobbyDTO(hobby)));
         }
     }
 
@@ -79,8 +79,8 @@ public class FullPersonDTO implements Serializable {
         return fullAddress.city;
     }
 
-    public Set<HobbyDTO> getHobbySet() {
-        return hobbySet;
+    public Set<HobbyDTO> getHobbies() {
+        return hobbies;
     }
 
     public Set<PhoneDTO> getPhone() {
@@ -100,13 +100,13 @@ public class FullPersonDTO implements Serializable {
                 Objects.equals(this.fullAddress.additionalInfo, entity.fullAddress.additionalInfo) &&
                 Objects.equals(this.fullAddress.zipCode, entity.fullAddress.zipCode) &&
                 Objects.equals(this.fullAddress.city, entity.fullAddress.city) &&
-                Objects.equals(this.hobbySet, entity.hobbySet) &&
+                Objects.equals(this.hobbies, entity.hobbies) &&
                 Objects.equals(this.phones, entity.phones);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, fullAddress.street, fullAddress.additionalInfo, fullAddress.zipCode, fullAddress.city, hobbySet, phones);
+        return Objects.hash(id, email, firstName, lastName, fullAddress.street, fullAddress.additionalInfo, fullAddress.zipCode, fullAddress.city, hobbies, phones);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class FullPersonDTO implements Serializable {
                 "addressAdditionalInfo = " + fullAddress.additionalInfo + ", " +
                 "addressCityInfoZipCode = " + fullAddress.zipCode + ", " +
                 "addressCityInfoCity = " + fullAddress.city + ", " +
-                "hobbySet = " + hobbySet + ", " +
+                "hobbySet = " + hobbies + ", " +
                 "phone = " + phones + ")";
     }
 
@@ -129,15 +129,21 @@ public class FullPersonDTO implements Serializable {
      */
     public static class HobbyDTO implements Serializable {
         private final String name;
+        private final String category;
+        private final String type;
         private final String description;
 
-        public HobbyDTO(String name, String description) {
+        public HobbyDTO(String name, String category, String type, String description) {
             this.name = name;
+            this.category = category;
+            this.type = type;
             this.description = description;
         }
 
         public HobbyDTO(Hobby hobby) {
             this.name = hobby.getName();
+            this.category = hobby.getCategory();
+            this.type = hobby.getType();
             this.description = hobby.getWikiLink();
         }
 

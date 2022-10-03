@@ -61,7 +61,7 @@ public class Person {
         this.address = address;
     }
 
-    public Set<Hobby> getHobbySet() {
+    public Set<Hobby> getHobbies() {
         return hobbySet;
     }
 

@@ -9,7 +9,6 @@ import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
 
 import java.util.List;
 
@@ -89,7 +88,7 @@ class APIFacadeTest {
 
     @Test
     void getPersonByHobby() {
-        List<PersonDTO> actual = facade.getPersonsByHobby(p1.getHobbySet().iterator().next().getName());
+        List<PersonDTO> actual = facade.getPersonsByHobby(p1.getHobbies().iterator().next().getName());
 //        PersonDTO expected = p1DTO;
         assertThat(actual, containsInAnyOrder(p1DTO, p3DTO));
 
