@@ -132,8 +132,22 @@ public class APIResource {
     @Path("person/{id}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String editPerson(@PathParam("id") String id, String input) {
-        return String.format("{\"msg\":\"Provided a person with id = %s exists, change the person to equal the input\"}", id);
+    public String editPerson(@PathParam("id") String id, String personJSON) {
+        Person person = GSON.fromJson(personJSON, Person.class);
+        if (!Objects.equals(person.getEmail(), "")
+            || !Objects.equals(person.getFirstName(), "")
+            || !Objects.equals(person.getLastName(), "")) {
+            Person editedPerson = FACADE.editPerson(person);
+            PersonDTO personDTO = new PersonDTO(editedPerson);
+            return GSON.toJson(personDTO);
+        } else {
+            List<String> msg = new ArrayList<>();
+            if (Objects.equals(person.getFirstName(), "")) msg.add("Field \"First name\" is required. ");
+            if (Objects.equals(person.getLastName(), "")) msg.add("Field \"Last name\" is required. ");
+            if (Objects.equals(person.getEmail(), "")) msg.add("Field \"Email\" is required. ");
+            ExceptionDTO exceptionDTO = new ExceptionDTO(400, String.join("\n", msg));
+            return GSON.toJson(exceptionDTO);
+        }
     }
 
 

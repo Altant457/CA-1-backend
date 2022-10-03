@@ -91,21 +91,38 @@ public class APIFacade {
                 throw new WebApplicationException(String.format("Person with email \"%s\" exists already.", newPerson.getEmail()));
             }
             em.getTransaction().begin();
-            List<Address> addresses = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.cityInfo.zipCode = :zipCode", Address.class)
-                    .setParameter("street", newPerson.getAddress().getStreet())
-                    .setParameter("zipCode", newPerson.getAddress().getCityInfo().getZipCode())
-                    .getResultList();
-            if (addresses.size() > 0) {
-                newPerson.setAddress(addresses.get(0));
-                em.merge(addresses.get(0));
-            } else {
-                em.persist(newPerson.getAddress());
-            }
+            updateAddress(newPerson, em);
             em.persist(newPerson);
             em.getTransaction().commit();
             return newPerson;
         } finally {
             em.close();
+        }
+    }
+
+    public Person editPerson(Person person) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            updateAddress(person, em);
+            em.merge(person);
+            em.getTransaction().commit();
+            return person;
+        } finally {
+            em.close();
+        }
+    }
+
+    private void updateAddress(Person newPerson, EntityManager em) {
+        List<Address> addresses = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.cityInfo.zipCode = :zipCode", Address.class)
+                .setParameter("street", newPerson.getAddress().getStreet())
+                .setParameter("zipCode", newPerson.getAddress().getCityInfo().getZipCode())
+                .getResultList();
+        if (addresses.size() > 0) {
+            newPerson.setAddress(addresses.get(0));
+            em.merge(addresses.get(0));
+        } else {
+            em.persist(newPerson.getAddress());
         }
     }
 }
