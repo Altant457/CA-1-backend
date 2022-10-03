@@ -24,12 +24,27 @@ public class FullPersonDTO implements Serializable {
         this.email = person.getEmail();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
-        this.fullAddress = new AddressDTO(person.getAddress().getStreet(),
-                                          person.getAddress().getAdditionalInfo(),
-                                          person.getAddress().getCityInfo().getZipCode(),
-                                          person.getAddress().getCityInfo().getCity());
-        person.getHobbySet().forEach(hobby -> this.hobbySet.add(new HobbyDTO(hobby)));
-        person.getPhone().forEach(phone -> this.phones.add(new PhoneDTO(phone)));
+        if (person.getAddress() != null) {
+            this.fullAddress = new AddressDTO(person.getAddress().getStreet(),
+                                              person.getAddress().getAdditionalInfo(),
+                                              person.getAddress().getCityInfo().getZipCode(),
+                                              person.getAddress().getCityInfo().getCity());
+        } else {
+            this.fullAddress = null;
+        }
+        if (person.getHobbySet().isEmpty()) {
+            person.getHobbySet().forEach(hobby -> this.hobbySet.add(new HobbyDTO(hobby)));
+        }
+        if (person.getPhone().isEmpty()) {
+            person.getPhone().forEach(phone -> this.phones.add(new PhoneDTO(phone)));
+        }
+    }
+
+    public static List<FullPersonDTO> getDTOList(List<Person> personList) {
+        List<FullPersonDTO> fullPersonDTOList = new ArrayList<>();
+        personList.forEach(person -> fullPersonDTOList.add(new FullPersonDTO(person)));
+        return fullPersonDTOList;
+
     }
 
     public static List<FullPersonDTO> getDTOList(List<Person> personList) {

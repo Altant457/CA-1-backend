@@ -3,8 +3,12 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.FullPersonDTO;
+
+import dtos.PersonDTO;
 import dtos.PersonsDTO;
 import dtos.ZipcodesDTO;
+import entities.Person;
+
 import errorhandling.ExceptionDTO;
 import facades.APIFacade;
 import utils.EMF_Creator;
@@ -12,7 +16,12 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 
 @Path("ca1")
 public class APIResource {
@@ -106,9 +115,25 @@ public class APIResource {
     @Path("person")
     @Consumes("application/json")
     @Produces("application/json")
-    public String createPerson(String person) { // input is the body of the request, generated in the frontend
-        return "{\"msg\":\"Input is correct, return a person with added id\"}";
-    }
+
+    public String createPerson(String personJSON) { // input is the body of the request, generated in the frontend
+        Person newPerson = GSON.fromJson(personJSON, Person.class);
+        if (!Objects.equals(newPerson.getEmail(), "")
+                || !Objects.equals(newPerson.getFirstName(), "")
+                || !Objects.equals(newPerson.getLastName(), "")) {
+            Person createdPerson = FACADE.createPerson(newPerson);
+            PersonDTO personDTO = new PersonDTO(createdPerson);
+            return GSON.toJson(personDTO);
+        } else {
+            List<String> msg = new ArrayList<>();
+            if (Objects.equals(newPerson.getFirstName(), "")) msg.add("Field \"First name\" is required. ");
+            if (Objects.equals(newPerson.getLastName(), "")) msg.add("Field \"Last name\" is required. ");
+            if (Objects.equals(newPerson.getEmail(), "")) msg.add("Field \"Email\" is required. ");
+            ExceptionDTO exceptionDTO = new ExceptionDTO(400, String.join("\n", msg)); // does JSON do newlines?
+            return GSON.toJson(exceptionDTO);
+        }
+
+   }
 
 //    ca1/person/{id}
 //    Edit Persons
@@ -116,8 +141,22 @@ public class APIResource {
     @Path("person/{id}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String editPerson(@PathParam("id") String id, String input) {
-        return String.format("{\"msg\":\"Provided a person with id = %s exists, change the person to equal the input\"}", id);
+    public String editPerson(@PathParam("id") String id, String personJSON) {
+        Person person = GSON.fromJson(personJSON, Person.class);
+        if (!Objects.equals(person.getEmail(), "")
+            || !Objects.equals(person.getFirstName(), "")
+            || !Objects.equals(person.getLastName(), "")) {
+            Person editedPerson = FACADE.editPerson(person);
+            PersonDTO personDTO = new PersonDTO(editedPerson);
+            return GSON.toJson(personDTO);
+        } else {
+            List<String> msg = new ArrayList<>();
+            if (Objects.equals(person.getFirstName(), "")) msg.add("Field \"First name\" is required. ");
+            if (Objects.equals(person.getLastName(), "")) msg.add("Field \"Last name\" is required. ");
+            if (Objects.equals(person.getEmail(), "")) msg.add("Field \"Email\" is required. ");
+            ExceptionDTO exceptionDTO = new ExceptionDTO(400, String.join("\n", msg));
+            return GSON.toJson(exceptionDTO);
+        }
     }
 
 
