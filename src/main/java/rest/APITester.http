@@ -39,5 +39,13 @@ accept:application/json
     "zipCode": "3720",
     "city": "Aakirkeby"
   },
-  "hobbies": []
+  "hobbies": [
+    {
+      "id": 404,
+      "name": "Hundesport",
+      "wikiLink": "https://en.wikipedia.org/wiki/Dog_sport",
+      "category": "Konkurrence",
+      "type": "Udendørs"
+    }
+  ]
 }

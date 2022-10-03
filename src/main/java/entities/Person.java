@@ -34,9 +34,18 @@ public class Person {
         this.email = fullPersonDTO.getEmail();
         this.firstName = fullPersonDTO.getFirstName();
         this.lastName = fullPersonDTO.getLastName();
-        this.address = ful;
-        this.hobbySet = hobbySet;
-        this.phone = phone;
+        this.address = new Address(fullPersonDTO.getStreet(),
+                                   fullPersonDTO.getAdditionalInfo(),
+                                new CityInfo(fullPersonDTO.getZipCode(), fullPersonDTO.getCity()));
+        fullPersonDTO.getHobbies().forEach(hobbyDTO -> {
+            this.addHobbytoHobbySet(new Hobby(hobbyDTO.getName(),
+                    hobbyDTO.getDescription(),
+                    hobbyDTO.getCategory(),
+                    hobbyDTO.getType()));
+        });
+        fullPersonDTO.getPhone().forEach(phoneDTO -> {
+            this.addPhone(new Phone(phoneDTO.getNumber(), phoneDTO.getDescription()));
+        });
     }
 
     public Person(String email, String firstName) {

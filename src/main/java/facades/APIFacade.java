@@ -1,8 +1,6 @@
 package facades;
 
-import dtos.FullPersonDTO;
-import dtos.PersonDTO;
-import dtos.ZipcodesDTO;
+import dtos.*;
 import entities.*;
 
 
@@ -110,6 +108,19 @@ public class APIFacade {
             em.merge(person);
             em.getTransaction().commit();
             return person;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<HobbyDTO> getAllHobbies() {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            List<Hobby> hobbies = em.createQuery("SELECT h FROM Hobby h", Hobby.class)
+                            .getResultList();
+            em.getTransaction().commit();
+            return HobbyDTOs.makeDTOlist(hobbies);
         } finally {
             em.close();
         }

@@ -157,6 +157,14 @@ public class FullPersonDTO implements Serializable {
             return description;
         }
 
+        public String getCategory() {
+            return category;
+        }
+
+        public String getType() {
+            return type;
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
