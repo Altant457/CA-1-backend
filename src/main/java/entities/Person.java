@@ -1,7 +1,6 @@
 package entities;
 
 import dtos.FullPersonDTO;
-
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Objects;

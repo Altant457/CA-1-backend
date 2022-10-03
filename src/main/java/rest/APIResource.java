@@ -3,7 +3,6 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.*;
-
 import entities.Person;
 
 import errorhandling.ExceptionDTO;
@@ -61,7 +60,7 @@ public class APIResource {
         }
     }
 
-    //    ca1/person/city/{zipCode}
+//    ca1/person/city/{zipCode}
 //    Get all persons living in a given city (i.e. 2800 Lyngby)
     @GET
     @Path("/person/city/{zipCode}")
@@ -75,7 +74,7 @@ public class APIResource {
         }
     }
 
-    //    ca1/hobby/{hobbyname}/count
+//    ca1/hobby/{hobbyname}/count
 //    Get the number of people with a given hobby
     @GET
     @Path("hobby/{hobbyname}/count")
@@ -89,7 +88,7 @@ public class APIResource {
         }
     }
 
-    //    ca1/zipcodes
+//    ca1/zipcodes
 //    Get a list of all zip codes in Denmark
 // should the path be changed? It seems weirdly named, when the return value is a list, not a number
 //    Thorbjørn: Jeg tænker at denne ville følge Jons logik: ca1/zipCode
@@ -110,7 +109,7 @@ public class APIResource {
         return GSON.toJson(hobbies);
     }
 
-    //    ca1/person
+//    ca1/person
 //    Create new Persons
     @POST
     @Path("person")
@@ -142,7 +141,7 @@ public class APIResource {
 
     }
 
-    //    ca1/person/{id}
+//    ca1/person/{id}
 //    Edit Persons
     @PUT
     @Path("person/{id}")
@@ -151,8 +150,8 @@ public class APIResource {
     public String editPerson(@PathParam("id") String id, String personJSON) {
         Person person = GSON.fromJson(personJSON, Person.class);
         if (!Objects.equals(person.getEmail(), "")
-                || !Objects.equals(person.getFirstName(), "")
-                || !Objects.equals(person.getLastName(), "")) {
+                && !Objects.equals(person.getFirstName(), "")
+                && !Objects.equals(person.getLastName(), "")) {
             Person editedPerson = FACADE.editPerson(person);
             PersonDTO personDTO = new PersonDTO(editedPerson);
             return GSON.toJson(personDTO);

@@ -34,7 +34,6 @@ public class Address {
         return street;
     }
 
-
     public void setStreet(String street) {
         this.street = street;
     }

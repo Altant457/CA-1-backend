@@ -24,7 +24,7 @@ public class PersonDTO {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
+    
     public static List<PersonDTO> getDTOList(List<Person> personList) {
         List<PersonDTO> personDTOList = new ArrayList<>();
         personList.forEach(person -> personDTOList.add(new PersonDTO(person)));
