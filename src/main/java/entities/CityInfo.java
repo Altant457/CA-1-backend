@@ -36,7 +36,12 @@ import java.util.Set;
         this.zipCode = zipCode;
     }
 
-    public String getZipCode() {
+        public CityInfo(String zipCode, String city) {
+            this.zipCode = zipCode;
+            this.city = city;
+        }
+
+        public String getZipCode() {
         return zipCode;
     }
 

@@ -37,6 +37,7 @@ class APIResourceTest {
     private static Hobby h1, h2, h3;
     private static Address a1, a2, a3;
     private static Phone ph1, ph2, ph3;
+    private static CityInfo c1, c2, c3;
 
 
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
@@ -80,15 +81,20 @@ class APIResourceTest {
         em.createQuery("delete from Phone").executeUpdate();
         em.createQuery("delete from Person").executeUpdate();
         em.createQuery("delete from Address").executeUpdate();
+        em.createQuery("delete from Hobby").executeUpdate();
+        em.createQuery("delete from CityInfo").executeUpdate();
 
         p1 = new Person("testemail1", "Test1", "person");
         p2 = new Person("testemail2", "Test2", "person");
         p3 = new Person("testemail3", "Test3", "person");
-        a1 = new Address("some street", "th", em.find(CityInfo.class, "3720"));
+        c1 = new CityInfo("1234", "testCity");
+        c2 = new CityInfo("1616", "testBy");
+        c3 = new CityInfo("6842", "byTest");
+        a1 = new Address("some street", "th", c1);
         ph1 = new Phone("12345678", "hjemmetelefon");
-        h1 = em.find(Hobby.class, 1L);
-        h2 = em.find(Hobby.class, 2L);
-        h3 = em.find(Hobby.class, 3L);
+        h1 = new Hobby("a", "a", "a", "a");
+        h2 = new Hobby("b", "b", "b", "b");
+        h3 = new Hobby("c", "c", "c", "c");
 
         p3.setLastName("Lname");
         p3.setAddress(a1);
@@ -102,6 +108,12 @@ class APIResourceTest {
         p3.addHobbytoHobbySet(h2);
         p3.addHobbytoHobbySet(h1);
 
+        em.persist(h1);
+        em.persist(h2);
+        em.persist(h3);
+        em.persist(c1);
+        em.persist(c2);
+        em.persist(c3);
         em.persist(a1);
         em.persist(ph1);
         em.persist(p1);
@@ -209,7 +221,7 @@ class APIResourceTest {
                 .statusCode(HttpStatus.OK_200.getStatusCode())
                 .extract().body().jsonPath().getList("all", String.class);
 
-        assertThat(zipCodes, hasItems("3720", "0960", "470", "186", "5800"));
+        assertThat(zipCodes, hasItems("1234", "1616", "6842"));
 
 
     }
