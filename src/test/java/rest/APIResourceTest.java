@@ -26,8 +26,7 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 class APIResourceTest {
@@ -48,6 +47,7 @@ class APIResourceTest {
     private static EntityManagerFactory emf;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
     static HttpServer startServer() {
         ResourceConfig rc = ResourceConfig.forApplication(new ApplicationConfig());
         return GrizzlyHttpServerFactory.createHttpServer(BASE_URI, rc);
@@ -95,7 +95,9 @@ class APIResourceTest {
         c2 = new CityInfo("1616", "testBy");
         c3 = new CityInfo("6842", "byTest");
         a1 = new Address("some street", "th", c1);
+        a2 = new Address("New Street", "tv", c2);
         ph1 = new Phone("12345678", "hjemmetelefon");
+        ph2 = new Phone("87654321", "testtelefon");
         h1 = new Hobby("a", "a", "a", "a");
         h2 = new Hobby("b", "b", "b", "b");
         h3 = new Hobby("c", "c", "c", "c");
@@ -234,39 +236,52 @@ class APIResourceTest {
     void createPersonTest() {
 
         Person newPerson = new Person("created@one.com", "Post-man", "Per");
-//        “id”: Number,
-//        “email”: String,
-//        “firstName”: String,
-//        “lastName”: String
-//        EntityManager em =
+
         newPerson.addPhone(ph1);
         newPerson.setAddress(a1);
-//        FullPersonDTONoId fullPersonDTONoId = new FullPersonDTONoId(newPerson);
         FullPersonDTO fullPersonDTO = new FullPersonDTO(newPerson);
 
-//            Parent p = new Parent("Helge",45);
-//            p.addChild(new Child("Josephine", 3));
-//            ParentDTO pdto = new ParentDTO(p);
-            String requestBody = GSON.toJson(fullPersonDTO);
-//
-            given()
-                    .header("Content-type", ContentType.JSON)
-                    .and()
-                    .body(requestBody)
-                    .when()
-                    .post("ca1/person")
-                    .then()
-                    .assertThat()
-                    .statusCode(200);
-//                    .body("id", notNullValue())
-//                    .body("name", equalTo("Helge"))
-//                    .body("children", hasItems(hasEntry("name", "Josephine")));
-//        }
+        String requestBody = GSON.toJson(fullPersonDTO);
 
+        given()
+                .header("Content-type", ContentType.JSON)
+                .and()
+                .body(requestBody)
+                .when()
+                .post("ca1/person")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body("id", notNullValue())
+                .body("firstName", equalTo("Post-man"))
+                .body("phones", hasItems(hasEntry("number", "12345678")))
+                .body("fullAddress", (hasEntry("street", "some street")));
 
     }
 
     @Test
     void editPerson() {
+
+        p3.addPhone(ph2);
+        p3.setAddress(a2);
+        p3.setLastName("Wunderkind");
+        FullPersonDTO fullPersonDTO = new FullPersonDTO(p3);
+        String requestBody = GSON.toJson(fullPersonDTO);
+        System.out.println("requestbody:" + requestBody);
+        given()
+                .header("Content-type", ContentType.JSON)
+                .body(requestBody)
+                .when()
+                .put("ca1/person/" + p3.getId())
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body("id", equalTo(p3.getId().intValue()))
+                .body("firstName", equalTo("Test3"))
+                .body("lastName", equalTo("Wunderkind"))
+                .body("phones", hasItems(hasEntry("number", "12345678")))
+                .body("fullAddress", (hasEntry("street", "New Street")));
     }
+
+
 }

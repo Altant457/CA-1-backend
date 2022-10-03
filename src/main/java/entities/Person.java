@@ -30,6 +30,7 @@ public class Person {
     }
 
     public Person(FullPersonDTO fullPersonDTO) {
+        this.id = fullPersonDTO.getId();
         this.email = fullPersonDTO.getEmail();
         this.firstName = fullPersonDTO.getFirstName();
         this.lastName = fullPersonDTO.getLastName();
