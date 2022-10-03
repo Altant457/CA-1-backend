@@ -113,17 +113,17 @@ public class APIResource {
     @Produces("application/json")
 
     public String createPerson(String personJSON) { // input is the body of the request, generated in the frontend
-        System.out.println("vi nåede til create person");
-        System.out.println(personJSON);
+//        System.out.println("vi nåede til create person");
+//        System.out.println(personJSON);
 //        Person newPerson = GSON.fromJson(personJSON, Person.class);
         FullPersonDTO newFullPersonDTO = GSON.fromJson(personJSON, FullPersonDTO.class);
-        System.out.println(newFullPersonDTO);
+//        System.out.println(newFullPersonDTO);
         if (!Objects.equals(newFullPersonDTO.getEmail(), null)
                 && !Objects.equals(newFullPersonDTO.getFirstName(), null)
                 && !Objects.equals(newFullPersonDTO.getLastName(), null)) {
             Person newPerson = new Person(newFullPersonDTO);
-            System.out.println("The person from FullPersonDTO");
-            System.out.println(newPerson);
+//            System.out.println("The person from FullPersonDTO");
+//            System.out.println(newPerson);
             Person createdPerson = FACADE.createPerson(newPerson);
             FullPersonDTO fullPersonDTO = new FullPersonDTO(createdPerson);
             return GSON.toJson(fullPersonDTO);
@@ -149,13 +149,13 @@ public class APIResource {
         if (!Objects.equals(fullPersonDTO.getEmail(), "")
                 && !Objects.equals(fullPersonDTO.getFirstName(), "")
                 && !Objects.equals(fullPersonDTO.getLastName(), "")) {
-            System.out.println("lige før facadekald til edit er vores personobjekt: " +fullPersonDTO);
+//            System.out.println("lige før facadekald til edit er vores personobjekt: " +fullPersonDTO);
             Person putPerson = new Person(fullPersonDTO);
             FullPersonDTO editedPersonDTO = FACADE.editPerson(fullPersonDTO);
 //            Person editedPerson = FACADE.editPerson(putPerson);
 //            PersonDTO personDTO = new PersonDTO(editedPerson);
 //            return GSON.toJson(personDTO);
-            System.out.println("den returnerede person efter facadekald er: " + editedPersonDTO);
+//            System.out.println("den returnerede person efter facadekald er: " + editedPersonDTO);
             return GSON.toJson(editedPersonDTO);
         } else {
             List<String> msg = new ArrayList<>();

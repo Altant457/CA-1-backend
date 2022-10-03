@@ -101,7 +101,7 @@ public class APIFacade {
     public FullPersonDTO editPerson(FullPersonDTO fullPersonDTO) {
         EntityManager em = getEntityManager();
         Person editedPerson = new Person(fullPersonDTO);
-        System.out.println("i editPerson i facaden er personobjektet: " + editedPerson);
+//        System.out.println("i editPerson i facaden er personobjektet: " + editedPerson);
         try {
             em.getTransaction().begin();
             updateAddress(editedPerson, em);

@@ -267,7 +267,7 @@ class APIResourceTest {
         p3.setLastName("Wunderkind");
         FullPersonDTO fullPersonDTO = new FullPersonDTO(p3);
         String requestBody = GSON.toJson(fullPersonDTO);
-        System.out.println("requestbody:" + requestBody);
+//        System.out.println("requestbody:" + requestBody);
         given()
                 .header("Content-type", ContentType.JSON)
                 .body(requestBody)
