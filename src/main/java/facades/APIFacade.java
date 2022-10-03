@@ -5,6 +5,7 @@ import dtos.PersonDTO;
 import dtos.ZipcodesDTO;
 import entities.*;
 
+
 import javax.enterprise.inject.Typed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -53,7 +54,6 @@ public class APIFacade {
         List<PersonDTO> personDTOList = PersonDTO.getDTOList(query.getResultList());
         em.close();
         return personDTOList;
-
     }
 
     public List<PersonDTO> getAllFromCity(String zipCode) {
@@ -62,6 +62,7 @@ public class APIFacade {
         List<PersonDTO> personDTOList = PersonDTO.getDTOList(query.setParameter("zipCode", zipCode).getResultList());
         em.close();
         return personDTOList;
+
     }
 
     public int getNumberWithHobby(String hobbyname) {
@@ -70,6 +71,7 @@ public class APIFacade {
         int count = query.setParameter("hobbyName", hobbyname).getResultList().size();
         em.close();
         return count;
+
     }
 
     public ZipcodesDTO getAllZipcodes() {
@@ -125,4 +127,5 @@ public class APIFacade {
             em.persist(newPerson.getAddress());
         }
     }
+
 }
