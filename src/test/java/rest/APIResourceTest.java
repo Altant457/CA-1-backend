@@ -239,8 +239,8 @@ class APIResourceTest {
 //        “firstName”: String,
 //        “lastName”: String
 //        EntityManager em =
-        newPerson.addPhone(ph2);
-        newPerson.setAddress(a2);
+        newPerson.addPhone(ph1);
+        newPerson.setAddress(a1);
 //        FullPersonDTONoId fullPersonDTONoId = new FullPersonDTONoId(newPerson);
         FullPersonDTO fullPersonDTO = new FullPersonDTO(newPerson);
 
