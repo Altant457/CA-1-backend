@@ -129,21 +129,15 @@ public class FullPersonDTO implements Serializable {
      */
     public static class HobbyDTO implements Serializable {
         private final String name;
-        private final String category;
-        private final String type;
         private final String description;
 
-        public HobbyDTO(String name, String category, String type, String description) {
+        public HobbyDTO(String name, String description) {
             this.name = name;
-            this.category = category;
-            this.type = type;
             this.description = description;
         }
 
         public HobbyDTO(Hobby hobby) {
             this.name = hobby.getName();
-            this.category = hobby.getCategory();
-            this.type = hobby.getType();
             this.description = hobby.getWikiLink();
         }
 
