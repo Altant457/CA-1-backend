@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.FullPersonDTO;
 import dtos.PersonDTO;
+import dtos.PersonsDTO;
+import dtos.ZipcodesDTO;
+import entities.Person;
 import errorhandling.ExceptionDTO;
 import facades.APIFacade;
 import utils.EMF_Creator;
@@ -11,6 +14,9 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Path("ca1")
 public class APIResource {
@@ -29,11 +35,10 @@ public class APIResource {
     @GET
     @Path("person/phone/{number}")
     @Produces({MediaType.APPLICATION_JSON})
-    //TODO String number
     public String getPersonByNumber(@PathParam("number") String number) {
         try {
-            FullPersonDTO personDTO = FACADE.getPersonByPhone(number);
-            return GSON.toJson(personDTO);
+            FullPersonDTO fullPersonDTO = FACADE.getPersonByPhone(number);
+            return GSON.toJson(fullPersonDTO);
         } catch (Exception e) {
             ExceptionDTO exceptionDTO = new ExceptionDTO(404, String.format("No person with number %s found", number));
             return GSON.toJson(exceptionDTO);
@@ -46,17 +51,29 @@ public class APIResource {
     @GET
     @Path("person/hobby/{hobbyname}")
     @Produces({MediaType.APPLICATION_JSON})
-    public String getPersonByHobby(@PathParam("hobbyname") String hobbyname) {
-        return String.format("{\"msg\":\"Here you get a list of all persons given a hobby. The hobby given was %s\"}", hobbyname);
+    public String getPersonsByHobby(@PathParam("hobbyname") String hobbyname) {
+        try {
+            PersonsDTO personsDTO = new PersonsDTO(FACADE.getPersonsByHobby(hobbyname));
+            return GSON.toJson(personsDTO);
+        } catch (Exception e) {
+            ExceptionDTO exceptionDTO = new ExceptionDTO(404, String.format("No hobby with name %s found", hobbyname));
+            return GSON.toJson(exceptionDTO);
+        }
     }
 
 //    ca1/{zipCode}
 //    Get all persons living in a given city (i.e. 2800 Lyngby)
     @GET
-    @Path("/person/city{zipCode}")
+    @Path("/person/city/{zipCode}")
     @Produces("application/json")
     public String getAllFromCity(@PathParam("zipCode") String zipCode) {
-        return String.format("{\"msg\":\"Here you get a list of all persons (in the db) who lives in a specific city. The given zipcode was %s\"}", zipCode);
+        try {
+            PersonsDTO personsDTO = new PersonsDTO(FACADE.getAllFromCity(zipCode));
+            return GSON.toJson(personsDTO);
+        } catch (Exception e) {
+            ExceptionDTO exceptionDTO = new ExceptionDTO(404, String.format("No city with zipcode %s found", zipCode));
+            return GSON.toJson(exceptionDTO);
+        }
     }
 
 //    ca1/count/{hobbyname}
@@ -64,8 +81,14 @@ public class APIResource {
     @GET
     @Path("hobby/{hobbyname}/count")
     @Produces("application/json")
-    public String getAllWithHobby(@PathParam("hobbyname") String hobbyname) {
-        return String.format("{\"msg\":\"Here you get the number of persons with the given hobby. The given hobby was %s\"}", hobbyname);
+    public String getNumberWithHobby(@PathParam("hobbyname") String hobbyname) {
+        try {
+            int count = FACADE.getNumberWithHobby(hobbyname);
+            return String.format("{\"count\":\"%d\"}", count);
+        } catch (Exception e) {
+            ExceptionDTO exceptionDTO = new ExceptionDTO(404, String.format("No hobby with name %s found", hobbyname));
+            return GSON.toJson(exceptionDTO);
+        }
     }
 
 //    ca1/count/zipcodes     // should the path be changed? It seems weirdly named, when the return value is a list, not a number
@@ -74,7 +97,8 @@ public class APIResource {
     @Path("zipcodes")
     @Produces("application/json")
     public String getAllZipcodes() {
-        return "{\"msg\":\"Here you get a list of all the zipcodes in Denmark\"}";
+        ZipcodesDTO zipCodes = FACADE.getAllZipcodes();
+        return GSON.toJson(zipCodes);
     }
 
 //    ca1/
@@ -83,8 +107,23 @@ public class APIResource {
     @Path("person")
     @Consumes("application/json")
     @Produces("application/json")
-    public String createPerson(String input) { // input is the body of the request, generated in the frontend
-        return "{\"msg\":\"Input is correct, return a person with added id\"}";
+    public String createPerson(String personJSON) { // input is the body of the request, generated in the frontend
+        Person newPerson = GSON.fromJson(personJSON, Person.class);
+        if (!Objects.equals(newPerson.getEmail(), "")
+                || !Objects.equals(newPerson.getFirstName(), "")
+                || !Objects.equals(newPerson.getLastName(), "")) {
+            Person createdPerson = FACADE.createPerson(newPerson);
+            PersonDTO personDTO = new PersonDTO(createdPerson);
+            return GSON.toJson(personDTO);
+        } else {
+            List<String> msg = new ArrayList<>();
+            if (Objects.equals(newPerson.getFirstName(), "")) msg.add("Field \"First name\" is required. ");
+            if (Objects.equals(newPerson.getLastName(), "")) msg.add("Field \"Last name\" is required. ");
+            if (Objects.equals(newPerson.getEmail(), "")) msg.add("Field \"Email\" is required. ");
+            ExceptionDTO exceptionDTO = new ExceptionDTO(400, String.join("\n", msg)); // does JSON do newlines?
+            return GSON.toJson(exceptionDTO);
+        }
+
     }
 
 //    ca1/{id}
@@ -93,8 +132,22 @@ public class APIResource {
     @Path("person/{id}")
     @Consumes("application/json")
     @Produces("application/json")
-    public String editPerson(@PathParam("id") String id, String input) {
-        return String.format("{\"msg\":\"Provided a person with id = %s exists, change the person to equal the input\"}", id);
+    public String editPerson(@PathParam("id") String id, String personJSON) {
+        Person person = GSON.fromJson(personJSON, Person.class);
+        if (!Objects.equals(person.getEmail(), "")
+            || !Objects.equals(person.getFirstName(), "")
+            || !Objects.equals(person.getLastName(), "")) {
+            Person editedPerson = FACADE.editPerson(person);
+            PersonDTO personDTO = new PersonDTO(editedPerson);
+            return GSON.toJson(personDTO);
+        } else {
+            List<String> msg = new ArrayList<>();
+            if (Objects.equals(person.getFirstName(), "")) msg.add("Field \"First name\" is required. ");
+            if (Objects.equals(person.getLastName(), "")) msg.add("Field \"Last name\" is required. ");
+            if (Objects.equals(person.getEmail(), "")) msg.add("Field \"Email\" is required. ");
+            ExceptionDTO exceptionDTO = new ExceptionDTO(400, String.join("\n", msg));
+            return GSON.toJson(exceptionDTO);
+        }
     }
 
 
