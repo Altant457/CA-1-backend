@@ -81,9 +81,9 @@ class APIResourceTest {
         em.createQuery("delete from Person").executeUpdate();
         em.createQuery("delete from Address").executeUpdate();
 
-        p1 = new Person("Testperson1", "testemail");
-        p2 = new Person("Testperson2", "testemail2");
-        p3 = new Person("Testperson3", "testemail3");
+        p1 = new Person("testemail1", "Test1", "person");
+        p2 = new Person("testemail2", "Test2", "person");
+        p3 = new Person("testemail3", "Test3", "person");
         a1 = new Address("some street", "th", em.find(CityInfo.class, "3720"));
         ph1 = new Phone("12345678", "hjemmetelefon");
         h1 = em.find(Hobby.class, 1L);

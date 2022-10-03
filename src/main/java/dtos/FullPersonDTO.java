@@ -47,13 +47,6 @@ public class FullPersonDTO implements Serializable {
 
     }
 
-    public static List<FullPersonDTO> getDTOList(List<Person> personList) {
-        List<FullPersonDTO> fullPersonDTOList = new ArrayList<>();
-        personList.forEach(person -> fullPersonDTOList.add(new FullPersonDTO(person)));
-        return fullPersonDTOList;
-
-    }
-
     public Long getId() {
         return id;
     }
