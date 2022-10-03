@@ -81,7 +81,7 @@ Hobby {
                 ", wikiLink='" + wikiLink + '\'' +
                 ", category='" + category + '\'' +
                 ", type='" + type + '\'' +
-                ", personSet=" + personSet +
+//                ", personSet=" + personSet +
                 '}';
     }
 

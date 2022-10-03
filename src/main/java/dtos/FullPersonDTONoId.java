@@ -7,36 +7,33 @@ import entities.Phone;
 import java.io.Serializable;
 import java.util.*;
 
-/**
- * A DTO for the {@link entities.Person} entity
- */
-public class FullPersonDTO implements Serializable {
-    private final Long id;
+public class FullPersonDTONoId implements Serializable {
+
     private final String email;
     private final String firstName;
     private final String lastName;
-    private final Set<PhoneDTO> phones = new LinkedHashSet<>();
-    private final AddressDTO fullAddress;
-    private final Set<HobbyDTO> hobbies = new LinkedHashSet<>();
+    private final Set<FullPersonDTONoId.PhoneDTO> phones = new LinkedHashSet<>();
+    private final FullPersonDTONoId.AddressDTO fullAddress;
+    private final Set<FullPersonDTONoId.HobbyDTO> hobbies = new LinkedHashSet<>();
 
-    public FullPersonDTO(Person person) {
-        this.id = person.getId();
+    public FullPersonDTONoId(Person person) {
+//        this.id = person.getId();
         this.email = person.getEmail();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
         if (!person.getPhone().isEmpty()) {
-            person.getPhone().forEach(phone -> this.phones.add(new PhoneDTO(phone)));
+            person.getPhone().forEach(phone -> this.phones.add(new FullPersonDTONoId.PhoneDTO(phone)));
         }
         if (person.getAddress() != null) {
-            this.fullAddress = new AddressDTO(person.getAddress().getStreet(),
-                                              person.getAddress().getAdditionalInfo(),
-                                              person.getAddress().getCityInfo().getZipCode(),
-                                              person.getAddress().getCityInfo().getCity());
+            this.fullAddress = new FullPersonDTONoId.AddressDTO(person.getAddress().getStreet(),
+                    person.getAddress().getAdditionalInfo(),
+                    person.getAddress().getCityInfo().getZipCode(),
+                    person.getAddress().getCityInfo().getCity());
         } else {
             this.fullAddress = null;
         }
         if (!person.getHobbies().isEmpty()) {
-            person.getHobbies().forEach(hobby -> this.hobbies.add(new HobbyDTO(hobby)));
+            person.getHobbies().forEach(hobby -> this.hobbies.add(new FullPersonDTONoId.HobbyDTO(hobby)));
         }
     }
 
@@ -49,9 +46,9 @@ public class FullPersonDTO implements Serializable {
 
     }
 
-    public Long getId() {
-        return id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
 
     public String getEmail() {
         return email;
@@ -81,11 +78,11 @@ public class FullPersonDTO implements Serializable {
         return fullAddress.city;
     }
 
-    public Set<HobbyDTO> getHobbies() {
+    public Set<FullPersonDTONoId.HobbyDTO> getHobbies() {
         return hobbies;
     }
 
-    public Set<PhoneDTO> getPhone() {
+    public Set<FullPersonDTONoId.PhoneDTO> getPhone() {
         return phones;
     }
 
@@ -93,8 +90,9 @@ public class FullPersonDTO implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FullPersonDTO entity = (FullPersonDTO) o;
-        return Objects.equals(this.id, entity.id) &&
+        FullPersonDTONoId entity = (FullPersonDTONoId) o;
+        return
+//                Objects.equals(this.id, entity.id) &&
                 Objects.equals(this.email, entity.email) &&
                 Objects.equals(this.firstName, entity.firstName) &&
                 Objects.equals(this.lastName, entity.lastName) &&
@@ -108,13 +106,13 @@ public class FullPersonDTO implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, fullAddress.street, fullAddress.additionalInfo, fullAddress.zipCode, fullAddress.city, hobbies, phones);
+        return Objects.hash(email, firstName, lastName, fullAddress.street, fullAddress.additionalInfo, fullAddress.zipCode, fullAddress.city, hobbies, phones);
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
+//                "id = " + id + ", " +
                 "email = " + email + ", " +
                 "firstName = " + firstName + ", " +
                 "lastName = " + lastName + ", " +
@@ -161,7 +159,7 @@ public class FullPersonDTO implements Serializable {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            HobbyDTO entity = (HobbyDTO) o;
+            FullPersonDTONoId.HobbyDTO entity = (FullPersonDTONoId.HobbyDTO) o;
             return Objects.equals(this.name, entity.name) &&
                     Objects.equals(this.description, entity.description);
         }
@@ -208,7 +206,7 @@ public class FullPersonDTO implements Serializable {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-            PhoneDTO entity = (PhoneDTO) o;
+            FullPersonDTONoId.PhoneDTO entity = (FullPersonDTONoId.PhoneDTO) o;
             return Objects.equals(this.number, entity.number) &&
                     Objects.equals(this.description, entity.description);
         }

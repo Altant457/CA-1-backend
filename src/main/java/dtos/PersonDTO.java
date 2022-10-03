@@ -19,6 +19,12 @@ public class PersonDTO {
         this.lastName = person.getLastName();
     }
 
+    public PersonDTO(String email, String firstName, String lastName) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public static List<PersonDTO> getDTOList(List<Person> personList) {
         List<PersonDTO> personDTOList = new ArrayList<>();
         personList.forEach(person -> personDTOList.add(new PersonDTO(person)));
