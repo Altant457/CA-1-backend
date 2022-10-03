@@ -1,3 +1,22 @@
+USE startcode_test;
+create table CITYINFO
+(
+    ZIPCODE varchar(4)  not null
+        primary key,
+    CITY    varchar(35) null
+);
+
+create table HOBBY
+(
+    id       bigint auto_increment
+        primary key,
+    CATEGORY varchar(255) null,
+    NAME     varchar(255) null,
+    TYPE     varchar(255) null,
+    WIKILINK varchar(255) null
+);
+
+
 INSERT INTO CITYINFO VALUES ('0555','Scanning');
 INSERT INTO CITYINFO VALUES ('0800','Høje Taastrup');
 INSERT INTO CITYINFO VALUES ('0877','København C');
