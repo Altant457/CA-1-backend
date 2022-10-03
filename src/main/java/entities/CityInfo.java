@@ -36,12 +36,12 @@ import java.util.Set;
         this.zipCode = zipCode;
     }
 
-        public CityInfo(String zipCode, String city) {
-            this.zipCode = zipCode;
-            this.city = city;
-        }
+    public CityInfo(String zipCode, String city) {
+        this.zipCode = zipCode;
+        this.city = city;
+    }
 
-        public String getZipCode() {
+    public String getZipCode() {
         return zipCode;
     }
 

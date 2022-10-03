@@ -1,5 +1,6 @@
 package entities;
 
+import dtos.FullPersonDTO;
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -28,10 +29,33 @@ public class Person {
     public Person() {
     }
 
+    public Person(FullPersonDTO fullPersonDTO) {
+        this.email = fullPersonDTO.getEmail();
+        this.firstName = fullPersonDTO.getFirstName();
+        this.lastName = fullPersonDTO.getLastName();
+        this.address = new Address(fullPersonDTO.getStreet(),
+                                   fullPersonDTO.getAdditionalInfo(),
+                                new CityInfo(fullPersonDTO.getZipCode(), fullPersonDTO.getCity()));
+        fullPersonDTO.getHobbies().forEach(hobbyDTO -> {
+            this.addHobbytoHobbySet(new Hobby(hobbyDTO.getName(),
+                    hobbyDTO.getDescription(),
+                    hobbyDTO.getCategory(),
+                    hobbyDTO.getType()));
+        });
+        fullPersonDTO.getPhone().forEach(phoneDTO -> {
+            this.addPhone(new Phone(phoneDTO.getNumber(), phoneDTO.getDescription()));
+        });
+    }
+
+    public Person(String email, String firstName) {
+        this.email = email;
+        this.firstName = firstName;
+    }
+
     public Person(String email, String firstName, String lastName) {
         this.email = email;
         this.firstName = firstName;
-
+        this.lastName = lastName;
     }
 
     public void addHobbytoHobbySet(Hobby hobby){
@@ -109,6 +133,9 @@ public class Person {
                 ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", address=" + address +
+                ", hobbySet=" + hobbySet +
+                ", phone=" + phone +
                 '}';
     }
 

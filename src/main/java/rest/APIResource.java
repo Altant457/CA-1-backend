@@ -2,11 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dtos.FullPersonDTO;
-
-import dtos.PersonDTO;
-import dtos.PersonsDTO;
-import dtos.ZipcodesDTO;
+import dtos.*;
 import entities.Person;
 
 import errorhandling.ExceptionDTO;
@@ -45,8 +41,7 @@ public class APIResource {
             FullPersonDTO fullPersonDTO = FACADE.getPersonByPhone(number);
             return GSON.toJson(fullPersonDTO);
         } catch (Exception e) {
-            ExceptionDTO exceptionDTO = new ExceptionDTO(404, String.format("No person with number %s found", number));
-            return GSON.toJson(exceptionDTO);
+            throw new WebApplicationException(String.format("No person with phone number \"%s\" found", number), 404);
         }
     }
 
@@ -61,8 +56,7 @@ public class APIResource {
             PersonsDTO personsDTO = new PersonsDTO(FACADE.getPersonsByHobby(hobbyname));
             return GSON.toJson(personsDTO);
         } catch (Exception e) {
-            ExceptionDTO exceptionDTO = new ExceptionDTO(404, String.format("No hobby with name %s found", hobbyname));
-            return GSON.toJson(exceptionDTO);
+            throw new WebApplicationException(String.format("No hobby with name \"%s\" found", hobbyname), 404);
         }
     }
 
@@ -76,8 +70,7 @@ public class APIResource {
             PersonsDTO personsDTO = new PersonsDTO(FACADE.getAllFromCity(zipCode));
             return GSON.toJson(personsDTO);
         } catch (Exception e) {
-            ExceptionDTO exceptionDTO = new ExceptionDTO(404, String.format("No city with zipcode %s found", zipCode));
-            return GSON.toJson(exceptionDTO);
+            throw new WebApplicationException(String.format("No city with zipcode \"%s\" found", zipCode), 404);
         }
     }
 
@@ -91,8 +84,7 @@ public class APIResource {
             int count = FACADE.getNumberWithHobby(hobbyname);
             return String.format("{\"count\":\"%d\"}", count);
         } catch (Exception e) {
-            ExceptionDTO exceptionDTO = new ExceptionDTO(404, String.format("No hobby with name %s found", hobbyname));
-            return GSON.toJson(exceptionDTO);
+            throw new WebApplicationException(String.format("No hobby with name \"%s\" found", hobbyname), 404);
         }
     }
 
@@ -109,6 +101,14 @@ public class APIResource {
         return GSON.toJson(zipCodes);
     }
 
+    @GET
+    @Path("hobby")
+    @Produces("application/json")
+    public String getAllHobbies() {
+        List<HobbyDTO> hobbies = FACADE.getAllHobbies();
+        return GSON.toJson(hobbies);
+    }
+
 //    ca1/person
 //    Create new Persons
     @POST
@@ -117,23 +117,29 @@ public class APIResource {
     @Produces("application/json")
 
     public String createPerson(String personJSON) { // input is the body of the request, generated in the frontend
-        Person newPerson = GSON.fromJson(personJSON, Person.class);
-        if (!Objects.equals(newPerson.getEmail(), "")
-                || !Objects.equals(newPerson.getFirstName(), "")
-                || !Objects.equals(newPerson.getLastName(), "")) {
+        System.out.println("vi nåede til create person");
+        System.out.println(personJSON);
+//        Person newPerson = GSON.fromJson(personJSON, Person.class);
+        FullPersonDTO newFullPersonDTO = GSON.fromJson(personJSON, FullPersonDTO.class);
+        System.out.println(newFullPersonDTO);
+        if (!Objects.equals(newFullPersonDTO.getEmail(), null)
+                && !Objects.equals(newFullPersonDTO.getFirstName(), null)
+                && !Objects.equals(newFullPersonDTO.getLastName(), null)) {
+            Person newPerson = new Person(newFullPersonDTO);
+            System.out.println("The person from FullPersonDTO");
+            System.out.println(newPerson);
             Person createdPerson = FACADE.createPerson(newPerson);
-            PersonDTO personDTO = new PersonDTO(createdPerson);
-            return GSON.toJson(personDTO);
+            FullPersonDTO fullPersonDTO = new FullPersonDTO(createdPerson);
+            return GSON.toJson(fullPersonDTO);
         } else {
             List<String> msg = new ArrayList<>();
-            if (Objects.equals(newPerson.getFirstName(), "")) msg.add("Field \"First name\" is required. ");
-            if (Objects.equals(newPerson.getLastName(), "")) msg.add("Field \"Last name\" is required. ");
-            if (Objects.equals(newPerson.getEmail(), "")) msg.add("Field \"Email\" is required. ");
-            ExceptionDTO exceptionDTO = new ExceptionDTO(400, String.join("\n", msg)); // does JSON do newlines?
-            return GSON.toJson(exceptionDTO);
+            if (Objects.equals(newFullPersonDTO.getFirstName(), null)) msg.add("Field \"First name\" is required. ");
+            if (Objects.equals(newFullPersonDTO.getLastName(), null)) msg.add("Field \"Last name\" is required. ");
+            if (Objects.equals(newFullPersonDTO.getEmail(), null)) msg.add("Field \"Email\" is required. ");
+            throw new WebApplicationException(String.join("\n", msg), 400);
         }
 
-   }
+    }
 
 //    ca1/person/{id}
 //    Edit Persons
@@ -144,8 +150,8 @@ public class APIResource {
     public String editPerson(@PathParam("id") String id, String personJSON) {
         Person person = GSON.fromJson(personJSON, Person.class);
         if (!Objects.equals(person.getEmail(), "")
-            || !Objects.equals(person.getFirstName(), "")
-            || !Objects.equals(person.getLastName(), "")) {
+                && !Objects.equals(person.getFirstName(), "")
+                && !Objects.equals(person.getLastName(), "")) {
             Person editedPerson = FACADE.editPerson(person);
             PersonDTO personDTO = new PersonDTO(editedPerson);
             return GSON.toJson(personDTO);
@@ -154,8 +160,7 @@ public class APIResource {
             if (Objects.equals(person.getFirstName(), "")) msg.add("Field \"First name\" is required. ");
             if (Objects.equals(person.getLastName(), "")) msg.add("Field \"Last name\" is required. ");
             if (Objects.equals(person.getEmail(), "")) msg.add("Field \"Email\" is required. ");
-            ExceptionDTO exceptionDTO = new ExceptionDTO(400, String.join("\n", msg));
-            return GSON.toJson(exceptionDTO);
+            throw new WebApplicationException(String.join("\n", msg), 400);
         }
     }
 
