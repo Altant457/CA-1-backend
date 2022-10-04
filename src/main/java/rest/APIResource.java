@@ -37,7 +37,9 @@ public class APIResource {
     public String getPersonByNumber(@PathParam("number") String number) {
         try {
             FullPersonDTO fullPersonDTO = FACADE.getPersonByPhone(number);
-            return GSON.toJson(fullPersonDTO);
+            String output = GSON.toJson(fullPersonDTO);
+            System.out.println(output);
+            return output;
         } catch (Exception e) {
             throw new WebApplicationException(String.format("No person with phone number \"%s\" found", number), 404);
         }

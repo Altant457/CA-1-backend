@@ -97,6 +97,7 @@ class APIFacadeTest {
     @Test
     void getPersonByPhone() {
         FullPersonDTO actual = facade.getPersonByPhone(p3.getPhone().iterator().next().getNumber());
+        System.out.println(actual);
         assertEquals(fp3DTO, actual);
     }
 
