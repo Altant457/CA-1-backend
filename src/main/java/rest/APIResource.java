@@ -4,16 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.*;
 import entities.Person;
-
-import errorhandling.ExceptionDTO;
 import facades.APIFacade;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -117,17 +113,17 @@ public class APIResource {
     @Produces("application/json")
 
     public String createPerson(String personJSON) { // input is the body of the request, generated in the frontend
-        System.out.println("vi nåede til create person");
-        System.out.println(personJSON);
+//        System.out.println("vi nåede til create person");
+//        System.out.println(personJSON);
 //        Person newPerson = GSON.fromJson(personJSON, Person.class);
         FullPersonDTO newFullPersonDTO = GSON.fromJson(personJSON, FullPersonDTO.class);
-        System.out.println(newFullPersonDTO);
+//        System.out.println(newFullPersonDTO);
         if (!Objects.equals(newFullPersonDTO.getEmail(), null)
                 && !Objects.equals(newFullPersonDTO.getFirstName(), null)
                 && !Objects.equals(newFullPersonDTO.getLastName(), null)) {
             Person newPerson = new Person(newFullPersonDTO);
-            System.out.println("The person from FullPersonDTO");
-            System.out.println(newPerson);
+//            System.out.println("The person from FullPersonDTO");
+//            System.out.println(newPerson);
             Person createdPerson = FACADE.createPerson(newPerson);
             FullPersonDTO fullPersonDTO = new FullPersonDTO(createdPerson);
             return GSON.toJson(fullPersonDTO);
@@ -148,18 +144,24 @@ public class APIResource {
     @Consumes("application/json")
     @Produces("application/json")
     public String editPerson(@PathParam("id") String id, String personJSON) {
-        Person person = GSON.fromJson(personJSON, Person.class);
-        if (!Objects.equals(person.getEmail(), "")
-                && !Objects.equals(person.getFirstName(), "")
-                && !Objects.equals(person.getLastName(), "")) {
-            Person editedPerson = FACADE.editPerson(person);
-            PersonDTO personDTO = new PersonDTO(editedPerson);
-            return GSON.toJson(personDTO);
+//        Person person = GSON.fromJson(personJSON, Person.class);
+        FullPersonDTO fullPersonDTO = GSON.fromJson(personJSON, FullPersonDTO.class);
+        if (!Objects.equals(fullPersonDTO.getEmail(), "")
+                && !Objects.equals(fullPersonDTO.getFirstName(), "")
+                && !Objects.equals(fullPersonDTO.getLastName(), "")) {
+//            System.out.println("lige før facadekald til edit er vores personobjekt: " +fullPersonDTO);
+            Person putPerson = new Person(fullPersonDTO);
+            FullPersonDTO editedPersonDTO = FACADE.editPerson(fullPersonDTO);
+//            Person editedPerson = FACADE.editPerson(putPerson);
+//            PersonDTO personDTO = new PersonDTO(editedPerson);
+//            return GSON.toJson(personDTO);
+//            System.out.println("den returnerede person efter facadekald er: " + editedPersonDTO);
+            return GSON.toJson(editedPersonDTO);
         } else {
             List<String> msg = new ArrayList<>();
-            if (Objects.equals(person.getFirstName(), "")) msg.add("Field \"First name\" is required. ");
-            if (Objects.equals(person.getLastName(), "")) msg.add("Field \"Last name\" is required. ");
-            if (Objects.equals(person.getEmail(), "")) msg.add("Field \"Email\" is required. ");
+            if (Objects.equals(fullPersonDTO.getFirstName(), "")) msg.add("Field \"First name\" is required. ");
+            if (Objects.equals(fullPersonDTO.getLastName(), "")) msg.add("Field \"Last name\" is required. ");
+            if (Objects.equals(fullPersonDTO.getEmail(), "")) msg.add("Field \"Email\" is required. ");
             throw new WebApplicationException(String.join("\n", msg), 400);
         }
     }

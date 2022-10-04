@@ -1,16 +1,14 @@
 package facades;
 
 import dtos.*;
-import entities.*;
+import entities.Address;
+import entities.Hobby;
+import entities.Person;
 
-
-import javax.enterprise.inject.Typed;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.WebApplicationException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class APIFacade {
@@ -100,14 +98,16 @@ public class APIFacade {
         }
     }
 
-    public Person editPerson(Person person) {
+    public FullPersonDTO editPerson(FullPersonDTO fullPersonDTO) {
         EntityManager em = getEntityManager();
+        Person editedPerson = new Person(fullPersonDTO);
+//        System.out.println("i editPerson i facaden er personobjektet: " + editedPerson);
         try {
             em.getTransaction().begin();
-            updateAddress(person, em);
-            em.merge(person);
+            updateAddress(editedPerson, em);
+            em.merge(editedPerson);
             em.getTransaction().commit();
-            return person;
+            return new FullPersonDTO(editedPerson);
         } finally {
             em.close();
         }
