@@ -8,8 +8,10 @@ import facades.APIFacade;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -185,4 +187,26 @@ public class APIResource {
 //        System.out.println(rmdto);
 //        return Response.ok().entity(rmdto).build();
 //    }
+
+    @DELETE
+    @Path("person/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response delete(@PathParam("id") int id) throws EntityNotFoundException {
+        PersonDTO deleted = new PersonDTO(FACADE.delete(id));
+        return Response.ok().entity(GSON.toJson(deleted)).build();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

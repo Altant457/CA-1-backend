@@ -49,3 +49,10 @@ accept:application/json
     }
   ]
 }
+
+### DELETE user by ID
+DELETE http://localhost:8080/CA1/api/ca1/person/1
+Content-Type: application/json
+accept:application/json
+
+

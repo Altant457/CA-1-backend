@@ -7,6 +7,7 @@ import entities.Person;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.WebApplicationException;
 import java.util.List;
@@ -138,5 +139,35 @@ public class APIFacade {
             em.persist(newPerson.getAddress());
         }
     }
+
+
+    public Person delete(int id) throws EntityNotFoundException {
+        EntityManager em = getEntityManager();
+        Person p = em.find(Person.class, id);
+        if (p == null)
+            throw new EntityNotFoundException("Could not remove Person with id: "+id);
+        em.getTransaction().begin();
+        em.remove(p);
+        em.getTransaction().commit();
+        return p;
+    }
+
+
+    //public void deletePerson(FullPersonDTO fullPersonDTO) {
+    public void deletePerson(int id) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            //em.remove(fullPersonDTO);
+            TypedQuery<Person> query = em.createQuery("DELETE FROM Person p WHERE p.id = :id", Person.class);
+            query.setParameter("id", id);
+            //em.merge(fullPersonDTO);
+            em.getTransaction().commit();
+            //Return number of affected rows? or string with info?
+        } finally {
+            em.close();
+        }
+    }
+
 
 }
