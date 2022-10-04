@@ -72,11 +72,11 @@ public class FullPersonDTO implements Serializable {
     }
 
     public String getZipCode() {
-        return fullAddress.zipCode;
+        return fullAddress.cityInfo.zipCode;
     }
 
     public String getCity() {
-        return fullAddress.city;
+        return fullAddress.cityInfo.city;
     }
 
     public Set<HobbyDTO> getHobbies() {
@@ -98,15 +98,15 @@ public class FullPersonDTO implements Serializable {
                 Objects.equals(this.lastName, entity.lastName) &&
                 Objects.equals(this.fullAddress.street, entity.fullAddress.street) &&
                 Objects.equals(this.fullAddress.additionalInfo, entity.fullAddress.additionalInfo) &&
-                Objects.equals(this.fullAddress.zipCode, entity.fullAddress.zipCode) &&
-                Objects.equals(this.fullAddress.city, entity.fullAddress.city) &&
+                Objects.equals(this.fullAddress.cityInfo.zipCode, entity.fullAddress.cityInfo.zipCode) &&
+                Objects.equals(this.fullAddress.cityInfo.city, entity.fullAddress.cityInfo.city) &&
                 Objects.equals(this.hobbies, entity.hobbies) &&
                 Objects.equals(this.phones, entity.phones);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, fullAddress.street, fullAddress.additionalInfo, fullAddress.zipCode, fullAddress.city, hobbies, phones);
+        return Objects.hash(id, email, firstName, lastName, fullAddress.street, fullAddress.additionalInfo, fullAddress.cityInfo.zipCode, fullAddress.cityInfo.city, hobbies, phones);
     }
 
     @Override
@@ -118,8 +118,8 @@ public class FullPersonDTO implements Serializable {
                 "lastName = " + lastName + ", " +
                 "addressStreet = " + fullAddress.street + ", " +
                 "addressAdditionalInfo = " + fullAddress.additionalInfo + ", " +
-                "addressCityInfoZipCode = " + fullAddress.zipCode + ", " +
-                "addressCityInfoCity = " + fullAddress.city + ", " +
+                "addressCityInfoZipCode = " + fullAddress.cityInfo.zipCode + ", " +
+                "addressCityInfoCity = " + fullAddress.cityInfo.city + ", " +
                 "hobbySet = " + hobbies + ", " +
                 "phone = " + phones + ")";
     }
@@ -128,31 +128,38 @@ public class FullPersonDTO implements Serializable {
      * A DTO for the {@link entities.Hobby} entity
      */
     public static class HobbyDTO implements Serializable {
+        private final Long id;
         private final String name;
         private final String category;
         private final String type;
-        private final String description;
+        private final String wikiLink;
 
-        public HobbyDTO(String name, String category, String type, String description) {
+        public HobbyDTO(String name, String category, String type, String wikiLink) {
+            this.id = null;
             this.name = name;
             this.category = category;
             this.type = type;
-            this.description = description;
+            this.wikiLink = wikiLink;
         }
 
         public HobbyDTO(Hobby hobby) {
+            this.id = hobby.getId();
             this.name = hobby.getName();
             this.category = hobby.getCategory();
             this.type = hobby.getType();
-            this.description = hobby.getWikiLink();
+            this.wikiLink = hobby.getWikiLink();
+        }
+
+        public Long getId() {
+            return id;
         }
 
         public String getName() {
             return name;
         }
 
-        public String getDescription() {
-            return description;
+        public String getWikiLink() {
+            return wikiLink;
         }
 
         public String getCategory() {
@@ -169,19 +176,20 @@ public class FullPersonDTO implements Serializable {
             if (o == null || getClass() != o.getClass()) return false;
             HobbyDTO entity = (HobbyDTO) o;
             return Objects.equals(this.name, entity.name) &&
-                    Objects.equals(this.description, entity.description);
+                    Objects.equals(this.wikiLink, entity.wikiLink);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(name, description);
+            return Objects.hash(name, wikiLink);
         }
 
         @Override
         public String toString() {
             return getClass().getSimpleName() + "(" +
+                    "id = " + id + ", " +
                     "name = " + name + ", " +
-                    "description = " + description + ")";
+                    "description = " + wikiLink + ")";
         }
     }
 
@@ -235,12 +243,19 @@ public class FullPersonDTO implements Serializable {
     public static class AddressDTO implements Serializable {
         private final String street;
         private final String additionalInfo;
-        private final String zipCode;
-        private final String city;
+        private final CityInfoDTO cityInfo;
 
         public AddressDTO(String street, String additionalInfo, String zipCode, String city) {
             this.street = street;
             this.additionalInfo = additionalInfo;
+            this.cityInfo = new CityInfoDTO(zipCode, city);
+        }
+    }
+
+    public static class CityInfoDTO implements Serializable {
+        private final String zipCode, city;
+
+        public CityInfoDTO(String zipCode, String city) {
             this.zipCode = zipCode;
             this.city = city;
         }

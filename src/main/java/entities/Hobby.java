@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.FullPersonDTO;
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -26,6 +28,14 @@ Hobby {
 
 
     public Hobby(String name, String wikiLink, String category, String type) {
+        this.name = name;
+        this.wikiLink = wikiLink;
+        this.category = category;
+        this.type = type;
+    }
+
+    public Hobby(Long id, String name, String wikiLink, String category, String type) {
+        this.id = id;
         this.name = name;
         this.wikiLink = wikiLink;
         this.category = category;

@@ -38,8 +38,9 @@ public class Person {
                                    fullPersonDTO.getAdditionalInfo(),
                                 new CityInfo(fullPersonDTO.getZipCode(), fullPersonDTO.getCity()));
         fullPersonDTO.getHobbies().forEach(hobbyDTO -> {
-            this.addHobbytoHobbySet(new Hobby(hobbyDTO.getName(),
-                    hobbyDTO.getDescription(),
+            this.addHobbytoHobbySet(new Hobby(hobbyDTO.getId(),
+                    hobbyDTO.getName(),
+                    hobbyDTO.getWikiLink(),
                     hobbyDTO.getCategory(),
                     hobbyDTO.getType()));
         });
