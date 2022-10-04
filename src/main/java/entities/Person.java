@@ -21,10 +21,10 @@ public class Person {
     private Address address;
 
     @ManyToMany
-    private Set<Hobby> hobbySet = new LinkedHashSet<>();
+    private Set<Hobby> hobbies = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
-    private Set<Phone> phone = new LinkedHashSet<>();
+    private Set<Phone> phones = new LinkedHashSet<>();
 
     public Person() {
     }
@@ -59,13 +59,13 @@ public class Person {
     }
 
     public void addHobbytoHobbySet(Hobby hobby){
-        this.hobbySet.add(hobby);
+        this.hobbies.add(hobby);
         hobby.getPersonSet().add(this);
 
     }
 
     public void addPhone(Phone phone){
-        this.phone.add(phone);
+        this.phones.add(phone);
         phone.setPerson(this);
 
     }
@@ -75,7 +75,7 @@ public class Person {
     }
 
     public Set<Phone> getPhone() {
-        return phone;
+        return phones;
     }
 
 //    public void setPhone(Set<Phone> phone) {
@@ -86,11 +86,11 @@ public class Person {
     }
 
     public Set<Hobby> getHobbies() {
-        return hobbySet;
+        return hobbies;
     }
 
-    public void setHobbySet(Set<Hobby> hobbySet) {
-        this.hobbySet = hobbySet;
+    public void setHobbies(Set<Hobby> hobbySet) {
+        this.hobbies = hobbySet;
     }
 
 
@@ -134,8 +134,8 @@ public class Person {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", address=" + address +
-                ", hobbySet=" + hobbySet +
-                ", phone=" + phone +
+                ", hobbySet=" + hobbies +
+                ", phone=" + phones +
                 '}';
     }
 

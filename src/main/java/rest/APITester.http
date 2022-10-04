@@ -33,11 +33,13 @@ accept:application/json
       "description": "arbejdstelefon"
     }
   ],
-  "fullAddress": {
+  "address": {
     "street": "teststreet",
     "additionalInfo": "th",
-    "zipCode": "3720",
-    "city": "Aakirkeby"
+    "cityInfo": {
+      "zipCode": "3720",
+      "city": "Aakirkeby"
+    }
   },
   "hobbies": [
     {

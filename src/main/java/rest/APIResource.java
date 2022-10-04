@@ -119,13 +119,13 @@ public class APIResource {
     public String createPerson(String personJSON) { // input is the body of the request, generated in the frontend
         System.out.println("vi nåede til create person");
         System.out.println(personJSON);
-//        Person newPerson = GSON.fromJson(personJSON, Person.class);
-        FullPersonDTO newFullPersonDTO = GSON.fromJson(personJSON, FullPersonDTO.class);
-        System.out.println(newFullPersonDTO);
-        if (!Objects.equals(newFullPersonDTO.getEmail(), null)
-                && !Objects.equals(newFullPersonDTO.getFirstName(), null)
-                && !Objects.equals(newFullPersonDTO.getLastName(), null)) {
-            Person newPerson = new Person(newFullPersonDTO);
+        Person newPerson = GSON.fromJson(personJSON, Person.class);
+//        FullPersonDTO newFullPersonDTO = GSON.fromJson(personJSON, FullPersonDTO.class);
+        System.out.println(newPerson);
+        if (!Objects.equals(newPerson.getEmail(), null)
+                && !Objects.equals(newPerson.getFirstName(), null)
+                && !Objects.equals(newPerson.getLastName(), null)) {
+//            Person newPerson = new Person(newFullPersonDTO);
             System.out.println("The person from FullPersonDTO");
             System.out.println(newPerson);
             Person createdPerson = FACADE.createPerson(newPerson);
@@ -133,9 +133,9 @@ public class APIResource {
             return GSON.toJson(fullPersonDTO);
         } else {
             List<String> msg = new ArrayList<>();
-            if (Objects.equals(newFullPersonDTO.getFirstName(), null)) msg.add("Field \"First name\" is required. ");
-            if (Objects.equals(newFullPersonDTO.getLastName(), null)) msg.add("Field \"Last name\" is required. ");
-            if (Objects.equals(newFullPersonDTO.getEmail(), null)) msg.add("Field \"Email\" is required. ");
+            if (Objects.equals(newPerson.getFirstName(), null)) msg.add("Field \"First name\" is required. ");
+            if (Objects.equals(newPerson.getLastName(), null)) msg.add("Field \"Last name\" is required. ");
+            if (Objects.equals(newPerson.getEmail(), null)) msg.add("Field \"Email\" is required. ");
             throw new WebApplicationException(String.join("\n", msg), 400);
         }
 

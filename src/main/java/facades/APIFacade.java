@@ -37,7 +37,7 @@ public class APIFacade {
 
     public FullPersonDTO getPersonByPhone(String phoneNumber) {
         EntityManager em = getEntityManager();
-        TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.phone ph WHERE ph.number= :phoneNumber", Person.class);
+        TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.phones ph WHERE ph.number= :phoneNumber", Person.class);
         query.setParameter("phoneNumber", phoneNumber);
         FullPersonDTO personDTO = new FullPersonDTO(query.getSingleResult());
         em.close();
@@ -47,7 +47,7 @@ public class APIFacade {
 
     public List<PersonDTO> getPersonsByHobby(String hobbyName){
         EntityManager em = getEntityManager();
-        TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbySet h WHERE h.name = :hobbyName", Person.class);
+        TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbies h WHERE h.name = :hobbyName", Person.class);
         query.setParameter("hobbyName", hobbyName);
         List<PersonDTO> personDTOList = PersonDTO.getDTOList(query.getResultList());
         em.close();
@@ -65,7 +65,7 @@ public class APIFacade {
 
     public int getNumberWithHobby(String hobbyname) {
         EntityManager em = getEntityManager();
-        TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbySet h WHERE h.name = :hobbyName", Person.class);
+        TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbies h WHERE h.name = :hobbyName", Person.class);
         int count = query.setParameter("hobbyName", hobbyname).getResultList().size();
         em.close();
         return count;
@@ -93,6 +93,9 @@ public class APIFacade {
             em.getTransaction().begin();
             updateAddress(newPerson, em);
             em.persist(newPerson);
+            newPerson.getPhone().forEach(phone -> {
+                phone.setPerson(newPerson);
+            });
             em.getTransaction().commit();
             return newPerson;
         } finally {

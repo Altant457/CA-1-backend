@@ -18,7 +18,7 @@ Hobby {
     private String category;
     private String type;
 
-    @ManyToMany(mappedBy = "hobbySet")
+    @ManyToMany(mappedBy = "hobbies")
     private Set<Person> personSet = new LinkedHashSet<>();
 
     public Hobby() {

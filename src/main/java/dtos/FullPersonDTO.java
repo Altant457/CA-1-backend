@@ -16,7 +16,7 @@ public class FullPersonDTO implements Serializable {
     private final String firstName;
     private final String lastName;
     private final Set<PhoneDTO> phones = new LinkedHashSet<>();
-    private final AddressDTO fullAddress;
+    private final AddressDTO address;
     private final Set<HobbyDTO> hobbies = new LinkedHashSet<>();
 
     public FullPersonDTO(Person person) {
@@ -28,12 +28,12 @@ public class FullPersonDTO implements Serializable {
             person.getPhone().forEach(phone -> this.phones.add(new PhoneDTO(phone)));
         }
         if (person.getAddress() != null) {
-            this.fullAddress = new AddressDTO(person.getAddress().getStreet(),
+            this.address = new AddressDTO(person.getAddress().getStreet(),
                                               person.getAddress().getAdditionalInfo(),
                                               person.getAddress().getCityInfo().getZipCode(),
                                               person.getAddress().getCityInfo().getCity());
         } else {
-            this.fullAddress = null;
+            this.address = null;
         }
         if (!person.getHobbies().isEmpty()) {
             person.getHobbies().forEach(hobby -> this.hobbies.add(new HobbyDTO(hobby)));
@@ -64,19 +64,19 @@ public class FullPersonDTO implements Serializable {
     }
 
     public String getStreet() {
-        return fullAddress.street;
+        return address.street;
     }
 
     public String getAdditionalInfo() {
-        return fullAddress.additionalInfo;
+        return address.additionalInfo;
     }
 
     public String getZipCode() {
-        return fullAddress.zipCode;
+        return address.cityInfo.zipCode;
     }
 
     public String getCity() {
-        return fullAddress.city;
+        return address.cityInfo.city;
     }
 
     public Set<HobbyDTO> getHobbies() {
@@ -96,17 +96,17 @@ public class FullPersonDTO implements Serializable {
                 Objects.equals(this.email, entity.email) &&
                 Objects.equals(this.firstName, entity.firstName) &&
                 Objects.equals(this.lastName, entity.lastName) &&
-                Objects.equals(this.fullAddress.street, entity.fullAddress.street) &&
-                Objects.equals(this.fullAddress.additionalInfo, entity.fullAddress.additionalInfo) &&
-                Objects.equals(this.fullAddress.zipCode, entity.fullAddress.zipCode) &&
-                Objects.equals(this.fullAddress.city, entity.fullAddress.city) &&
+                Objects.equals(this.address.street, entity.address.street) &&
+                Objects.equals(this.address.additionalInfo, entity.address.additionalInfo) &&
+                Objects.equals(this.address.cityInfo.zipCode, entity.address.cityInfo.zipCode) &&
+                Objects.equals(this.address.cityInfo.city, entity.address.cityInfo.city) &&
                 Objects.equals(this.hobbies, entity.hobbies) &&
                 Objects.equals(this.phones, entity.phones);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, fullAddress.street, fullAddress.additionalInfo, fullAddress.zipCode, fullAddress.city, hobbies, phones);
+        return Objects.hash(id, email, firstName, lastName, address.street, address.additionalInfo, address.cityInfo.zipCode, address.cityInfo.city, hobbies, phones);
     }
 
     @Override
@@ -116,10 +116,10 @@ public class FullPersonDTO implements Serializable {
                 "email = " + email + ", " +
                 "firstName = " + firstName + ", " +
                 "lastName = " + lastName + ", " +
-                "addressStreet = " + fullAddress.street + ", " +
-                "addressAdditionalInfo = " + fullAddress.additionalInfo + ", " +
-                "addressCityInfoZipCode = " + fullAddress.zipCode + ", " +
-                "addressCityInfoCity = " + fullAddress.city + ", " +
+                "addressStreet = " + address.street + ", " +
+                "addressAdditionalInfo = " + address.additionalInfo + ", " +
+                "addressCityInfoZipCode = " + address.cityInfo.zipCode + ", " +
+                "addressCityInfoCity = " + address.cityInfo.city + ", " +
                 "hobbySet = " + hobbies + ", " +
                 "phone = " + phones + ")";
     }
@@ -235,12 +235,19 @@ public class FullPersonDTO implements Serializable {
     public static class AddressDTO implements Serializable {
         private final String street;
         private final String additionalInfo;
-        private final String zipCode;
-        private final String city;
+        private final CityInfoDTO cityInfo;
 
         public AddressDTO(String street, String additionalInfo, String zipCode, String city) {
             this.street = street;
             this.additionalInfo = additionalInfo;
+            this.cityInfo = new CityInfoDTO(zipCode, city);
+        }
+    }
+
+    public static class CityInfoDTO implements Serializable {
+        private final String zipCode, city;
+
+        public CityInfoDTO(String zipCode, String city) {
             this.zipCode = zipCode;
             this.city = city;
         }
