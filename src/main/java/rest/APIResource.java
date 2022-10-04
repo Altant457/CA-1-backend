@@ -191,7 +191,7 @@ public class APIResource {
     @DELETE
     @Path("person/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response delete(@PathParam("id") int id) throws EntityNotFoundException {
+    public Response delete(@PathParam("id") Long id) throws EntityNotFoundException {
         PersonDTO deleted = new PersonDTO(FACADE.delete(id));
         return Response.ok().entity(GSON.toJson(deleted)).build();
     }

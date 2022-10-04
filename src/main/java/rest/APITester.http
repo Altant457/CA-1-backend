@@ -24,17 +24,17 @@ Content-Type: application/json
 accept:application/json
 
 {
-  "email": "created@one.com",
+  "email": "created@three.com",
   "firstName": "Post-man",
   "lastName": "Per",
   "phones": [
     {
-      "number": "91011121",
+      "number": "91019921",
       "description": "arbejdstelefon"
     }
   ],
   "fullAddress": {
-    "street": "teststreet",
+    "street": "teststreet3",
     "additionalInfo": "th",
     "cityInfo": {
       "zipCode": "3720",
@@ -53,7 +53,7 @@ accept:application/json
 }
 
 ### DELETE user by ID
-DELETE http://localhost:8080/CA1/api/ca1/person/1
+DELETE http://localhost:8080/CA1/api/ca1/person/3
 Content-Type: application/json
 accept:application/json
 

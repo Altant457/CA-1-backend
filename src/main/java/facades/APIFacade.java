@@ -141,12 +141,19 @@ public class APIFacade {
     }
 
 
-    public Person delete(int id) throws EntityNotFoundException {
+    public Person delete(Long id) throws EntityNotFoundException {
         EntityManager em = getEntityManager();
         Person p = em.find(Person.class, id);
         if (p == null)
             throw new EntityNotFoundException("Could not remove Person with id: "+id);
         em.getTransaction().begin();
+        p.getHobbies().forEach(hobby -> {
+            hobby.getPersonSet().remove(p);
+        em.merge(hobby);
+        });
+        p.getPhone().forEach(phone -> {
+            em.remove(phone);
+        });
         em.remove(p);
         em.getTransaction().commit();
         return p;
@@ -154,7 +161,7 @@ public class APIFacade {
 
 
     //public void deletePerson(FullPersonDTO fullPersonDTO) {
-    public void deletePerson(int id) {
+    public void deletePerson(Long id) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
