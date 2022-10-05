@@ -38,7 +38,7 @@ public class APIResource {
         try {
             FullPersonDTO fullPersonDTO = FACADE.getPersonByPhone(number);
             String output = GSON.toJson(fullPersonDTO);
-            System.out.println(output);
+//            System.out.println(output);
             return output;
         } catch (Exception e) {
             throw new WebApplicationException(String.format("No person with phone number \"%s\" found", number), 404);

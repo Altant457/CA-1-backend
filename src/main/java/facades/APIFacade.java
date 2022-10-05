@@ -44,12 +44,11 @@ public class APIFacade {
 
     }
 
-    public List<FullPersonDTO> getPersonsByHobby(String hobbyName){
+    public List<FullPersonDTO> getPersonsByHobby(String hobbyName) {
         EntityManager em = getEntityManager();
         TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbySet h WHERE h.name = :hobbyName", Person.class);
         query.setParameter("hobbyName", hobbyName);
         List<FullPersonDTO> fullPersonDTOList = FullPersonDTO.getDTOList(query.getResultList());
-        System.out.println("udskrift af dto fra facade" +fullPersonDTOList);
         em.close();
         return fullPersonDTOList;
     }
@@ -86,7 +85,7 @@ public class APIFacade {
         EntityManager em = getEntityManager();
         try {
             List<Person> personList = em.createQuery("SELECT p FROM Person p WHERE p.email = :email", Person.class)
-                            .setParameter("email", newPerson.getEmail()).getResultList();
+                    .setParameter("email", newPerson.getEmail()).getResultList();
             if (personList.size() > 0) {
                 throw new WebApplicationException(String.format("Person with email \"%s\" exists already.", newPerson.getEmail()));
             }
@@ -120,7 +119,7 @@ public class APIFacade {
         try {
             em.getTransaction().begin();
             List<Hobby> hobbies = em.createQuery("SELECT h FROM Hobby h", Hobby.class)
-                            .getResultList();
+                    .getResultList();
             em.getTransaction().commit();
             return HobbyDTOs.makeDTOlist(hobbies);
         } finally {
@@ -146,11 +145,11 @@ public class APIFacade {
         EntityManager em = getEntityManager();
         Person p = em.find(Person.class, id);
         if (p == null)
-            throw new EntityNotFoundException("Could not remove Person with id: "+id);
+            throw new EntityNotFoundException("Could not remove Person with id: " + id);
         em.getTransaction().begin();
         p.getHobbies().forEach(hobby -> {
             hobby.getPersonSet().remove(p);
-        em.merge(hobby);
+            em.merge(hobby);
         });
         p.getPhone().forEach(phone -> {
             em.remove(phone);

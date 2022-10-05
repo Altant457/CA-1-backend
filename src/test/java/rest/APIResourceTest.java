@@ -203,11 +203,8 @@ class APIResourceTest {
                         .extract().body().jsonPath().getList("all", PersonDTO.class);
 
 
-        assertThat(personDTOS, containsInAnyOrder(p2DTO, p3DTO, p1DTO));
+        assertThat(personDTOS, containsInAnyOrder(p2DTO, p3DTO));
 
-//        List<FullPersonDTO> fullPersonDTOList = new ArrayList<>();
-//                personDTOS.forEach(personDTO -> fullPersonDTOList.add(new Person(PersonDTO)));
-//        assertThat(personDTOS, containsInAnyOrder(fp2DTO, fp3DTO, fp1DTO));
 
     }
 

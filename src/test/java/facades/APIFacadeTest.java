@@ -30,8 +30,7 @@ class APIFacadeTest {
     private CityInfo c1, c2, c3;
 
     @BeforeAll
-    public static void setUpClass()
-    {
+    public static void setUpClass() {
         emf = EMF_Creator.createEntityManagerFactoryForTest();
         facade = APIFacade.getInstance(emf);
     }
@@ -99,19 +98,15 @@ class APIFacadeTest {
     @Test
     void getPersonByPhone() {
         FullPersonDTO actual = facade.getPersonByPhone(p3.getPhone().iterator().next().getNumber());
-        System.out.println(actual);
         assertEquals(fp3DTO, actual);
     }
 
     @Test
     void getPersonByHobby() {
         List<FullPersonDTO> actual = facade.getPersonsByHobby(p1.getHobbies().iterator().next().getName());
-        System.out.println(actual);
-
-//        PersonDTO expected = p1DTO;
         assertThat(actual, containsInAnyOrder(fp1DTO, fp2DTO, fp3DTO));
 
-//        assertThat(actual, containsInAnyOrder(e1DTO, e2DTO, e3DTO, employeeDTO));
+
     }
 
     @Test
@@ -132,7 +127,7 @@ class APIFacadeTest {
     @Test
     void getAllZipcodes() {
         ZipcodesDTO actual = facade.getAllZipcodes();
-        assertThat(actual.getAll(), hasItems("1234","1616", "6842"));
+        assertThat(actual.getAll(), hasItems("1234", "1616", "6842"));
     }
 
 
@@ -147,7 +142,6 @@ class APIFacadeTest {
         newPerson = facade.createPerson(newPerson);
         FullPersonDTO actual = facade.getPersonByPhone(newPhone.getNumber());
         FullPersonDTO expected = new FullPersonDTO(newPerson);
-
         assertEquals(expected, actual);
     }
 
