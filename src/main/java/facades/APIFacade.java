@@ -93,8 +93,8 @@ public class APIFacade {
                 throw new WebApplicationException(String.format("Person with email \"%s\" exists already.", newPerson.getEmail()));
             }
             em.getTransaction().begin();
-            newPerson.getPhone().forEach(em::persist);
             updateAddress(newPerson, em);
+            newPerson.getPhone().forEach(em::persist);
             em.persist(newPerson);
             em.getTransaction().commit();
             return newPerson;
