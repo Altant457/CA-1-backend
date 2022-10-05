@@ -54,6 +54,7 @@ public class APIResource {
     public String getPersonsByHobby(@PathParam("hobbyname") String hobbyname) {
         try {
             List<FullPersonDTO> fullPersonDTOList = FACADE.getPersonsByHobby(hobbyname);
+            System.out.println("objekt fra endpoint:" +fullPersonDTOList);
             return GSON.toJson(fullPersonDTOList);
         } catch (Exception e) {
             throw new WebApplicationException(String.format("No hobby with name \"%s\" found", hobbyname), 404);
