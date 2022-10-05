@@ -87,26 +87,40 @@ public class FullPersonDTO implements Serializable {
         return phones;
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        FullPersonDTO entity = (FullPersonDTO) o;
+//        return Objects.equals(this.id, entity.id) &&
+//                Objects.equals(this.email, entity.email) &&
+//                Objects.equals(this.firstName, entity.firstName) &&
+//                Objects.equals(this.lastName, entity.lastName) &&
+//                Objects.equals(this.fullAddress.street, entity.fullAddress.street) &&
+//                Objects.equals(this.fullAddress.additionalInfo, entity.fullAddress.additionalInfo) &&
+//                Objects.equals(this.fullAddress.cityInfo.zipCode, entity.fullAddress.cityInfo.zipCode) &&
+//                Objects.equals(this.fullAddress.cityInfo.city, entity.fullAddress.cityInfo.city) &&
+//                Objects.equals(this.hobbies, entity.hobbies) &&
+//                Objects.equals(this.phones, entity.phones);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, email, firstName, lastName, fullAddress.street, fullAddress.additionalInfo, fullAddress.cityInfo.zipCode, fullAddress.cityInfo.city, hobbies, phones);
+//    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FullPersonDTO entity = (FullPersonDTO) o;
-        return Objects.equals(this.id, entity.id) &&
-                Objects.equals(this.email, entity.email) &&
-                Objects.equals(this.firstName, entity.firstName) &&
-                Objects.equals(this.lastName, entity.lastName) &&
-                Objects.equals(this.fullAddress.street, entity.fullAddress.street) &&
-                Objects.equals(this.fullAddress.additionalInfo, entity.fullAddress.additionalInfo) &&
-                Objects.equals(this.fullAddress.cityInfo.zipCode, entity.fullAddress.cityInfo.zipCode) &&
-                Objects.equals(this.fullAddress.cityInfo.city, entity.fullAddress.cityInfo.city) &&
-                Objects.equals(this.hobbies, entity.hobbies) &&
-                Objects.equals(this.phones, entity.phones);
+        FullPersonDTO that = (FullPersonDTO) o;
+        return Objects.equals(id, that.id) && Objects.equals(email, that.email) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(phones, that.phones) && Objects.equals(fullAddress, that.fullAddress) && Objects.equals(hobbies, that.hobbies);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, fullAddress.street, fullAddress.additionalInfo, fullAddress.cityInfo.zipCode, fullAddress.cityInfo.city, hobbies, phones);
+        return Objects.hash(id, email, firstName, lastName, phones, fullAddress, hobbies);
     }
 
     @Override

@@ -4,27 +4,26 @@ import dtos.FullPersonDTO;
 import dtos.PersonDTO;
 import dtos.ZipcodesDTO;
 import entities.*;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasItems;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class APIFacadeTest {
     private static EntityManagerFactory emf;
     private static APIFacade facade;
     private Person p1, p2, p3;
     private PersonDTO p1DTO, p2DTO, p3DTO;
-    private FullPersonDTO fp3DTO;
+    private FullPersonDTO fp1DTO, fp2DTO, fp3DTO;
     private Hobby h1, h2, h3;
     private Address a1, a2, a3;
     private Phone ph1, ph2, ph3;
@@ -60,9 +59,11 @@ class APIFacadeTest {
         h2 = new Hobby("b", "b", "b", "b");
         h3 = new Hobby("c", "c", "c", "c");
 
+
         p3.setLastName("Lname");
-        p3.setAddress(a1);
+        p1.setAddress(a1);
         p2.setAddress(a1);
+        p3.setAddress(a1);
         p3.addHobbytoHobbySet(h1);
         p3.addPhone(ph1);
 
@@ -90,8 +91,9 @@ class APIFacadeTest {
         p1DTO = new PersonDTO(p1);
         p2DTO = new PersonDTO(p2);
         p3DTO = new PersonDTO(p3);
+        fp1DTO = new FullPersonDTO(p1);
+        fp2DTO = new FullPersonDTO(p2);
         fp3DTO = new FullPersonDTO(p3);
-
     }
 
     @Test
@@ -103,9 +105,11 @@ class APIFacadeTest {
 
     @Test
     void getPersonByHobby() {
-        List<PersonDTO> actual = facade.getPersonsByHobby(p1.getHobbies().iterator().next().getName());
+        List<FullPersonDTO> actual = facade.getPersonsByHobby(p1.getHobbies().iterator().next().getName());
+        System.out.println(actual);
+
 //        PersonDTO expected = p1DTO;
-        assertThat(actual, containsInAnyOrder(p1DTO, p3DTO, p2DTO));
+        assertThat(actual, containsInAnyOrder(fp1DTO, fp2DTO, fp3DTO));
 
 //        assertThat(actual, containsInAnyOrder(e1DTO, e2DTO, e3DTO, employeeDTO));
     }
