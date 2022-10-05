@@ -11,6 +11,19 @@ import java.util.*;
  * A DTO for the {@link entities.Person} entity
  */
 public class FullPersonDTO implements Serializable {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FullPersonDTO that = (FullPersonDTO) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
     private final Long id;
     private final String email;
     private final String firstName;
@@ -109,19 +122,6 @@ public class FullPersonDTO implements Serializable {
 //        return Objects.hash(id, email, firstName, lastName, fullAddress.street, fullAddress.additionalInfo, fullAddress.cityInfo.zipCode, fullAddress.cityInfo.city, hobbies, phones);
 //    }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FullPersonDTO that = (FullPersonDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(email, that.email) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(phones, that.phones) && Objects.equals(fullAddress, that.fullAddress) && Objects.equals(hobbies, that.hobbies);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, phones, fullAddress, hobbies);
-    }
 
     @Override
     public String toString() {
@@ -232,19 +232,6 @@ public class FullPersonDTO implements Serializable {
             return description;
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            PhoneDTO entity = (PhoneDTO) o;
-            return Objects.equals(this.number, entity.number) &&
-                    Objects.equals(this.description, entity.description);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(number, description);
-        }
 
         @Override
         public String toString() {
