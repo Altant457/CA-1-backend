@@ -23,7 +23,7 @@ public class Person {
     @ManyToMany
     private Set<Hobby> hobbySet = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "person")
     private Set<Phone> phone = new LinkedHashSet<>();
 
     public Person() {
@@ -70,6 +70,11 @@ public class Person {
         this.phone.add(phone);
         phone.setPerson(this);
 
+    }
+
+    public void setPhone(Set<Phone> phones) {
+        this.phone = phones;
+        phones.forEach(ph -> ph.setPerson(this));
     }
 
     public Address getAddress() {

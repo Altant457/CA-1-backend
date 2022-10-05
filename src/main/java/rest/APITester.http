@@ -1,5 +1,5 @@
 ### GET person with the phone number 45454545
-GET http://localhost:8080/CA1/api/ca1/person/phone/45454545
+GET http://localhost:8080/CA1/api/ca1/person/phone/91019921
 accept:application/json
 
 ### GET all persons that do the hobby 3D-udskrivning
@@ -19,11 +19,58 @@ GET http://localhost:8080/CA1/api/ca1/hobby/3D-udskrivning/count
 accept:application/json
 
 ### POST new person
-POST http://localhost:8080/CA1/api/ca1/person
+POST https://altantthewired.me/tomcat/CA1/api/ca1/person
 Content-Type: application/json
 accept:application/json
 
 {
+  "email": "peter@mail.dk",
+  "firstName": "Peter",
+  "lastName": "Madsen",
+  "phones": [
+    {
+      "number": "12345678",
+      "description": "arbejdstelefon"
+    }
+  ],
+  "fullAddress": {
+    "street": "teststreet3",
+    "additionalInfo": "th",
+    "cityInfo": {
+      "zipCode": "3720",
+      "city": "Aakirkeby"
+    }
+  },
+  "hobbies": [
+    {
+      "id": 1,
+      "name": "3D-udskrivning",
+      "wikiLink": "https://en.wikipedia.org/wiki/3D_printing",
+      "category": "Generel",
+      "type": "Indendørs"
+    },
+    {
+      "id": 404,
+      "name": "Hundesport",
+      "wikiLink": "https://en.wikipedia.org/wiki/Dog_sport",
+      "category": "Konkurrence",
+      "type": "Udendørs"
+    }
+  ]
+}
+
+### DELETE user by ID
+DELETE http://localhost:8080/CA1/api/ca1/person/2
+Content-Type: application/json
+accept:application/json
+
+### Edit user by ID
+PUT http://localhost:8080/CA1/api/ca1/person/2
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": 2,
   "email": "created@three.com",
   "firstName": "Post-man",
   "lastName": "Per",
@@ -43,18 +90,11 @@ accept:application/json
   },
   "hobbies": [
     {
-      "id": 404,
-      "name": "Hundesport",
-      "wikiLink": "https://en.wikipedia.org/wiki/Dog_sport",
-      "category": "Konkurrence",
-      "type": "Udendørs"
+      "id": 303,
+      "name": "Historie",
+      "category": "Educational hobbies",
+      "type": "---",
+      "wikiLink": "https://en.wikipedia.org/wiki/History"
     }
   ]
 }
-
-### DELETE user by ID
-DELETE http://localhost:8080/CA1/api/ca1/person/3
-Content-Type: application/json
-accept:application/json
-
-
