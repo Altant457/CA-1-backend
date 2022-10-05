@@ -4,13 +4,16 @@ import dtos.*;
 import entities.Address;
 import entities.Hobby;
 import entities.Person;
+import entities.Phone;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.WebApplicationException;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class APIFacade {
     private static APIFacade instance;
@@ -90,6 +93,7 @@ public class APIFacade {
                 throw new WebApplicationException(String.format("Person with email \"%s\" exists already.", newPerson.getEmail()));
             }
             em.getTransaction().begin();
+            newPerson.getPhone().forEach(em::persist);
             updateAddress(newPerson, em);
             em.persist(newPerson);
             em.getTransaction().commit();
@@ -106,12 +110,29 @@ public class APIFacade {
         try {
             em.getTransaction().begin();
             updateAddress(editedPerson, em);
+            editedPerson.setPhone(updatePhone(editedPerson, editedPerson.getPhone(), em));
             em.merge(editedPerson);
             em.getTransaction().commit();
             return new FullPersonDTO(editedPerson);
         } finally {
             em.close();
         }
+    }
+
+    private Set<Phone> updatePhone(Person newPerson, Set<Phone> newPhones, EntityManager em) {
+        newPhones.forEach(phone -> {
+            try {
+                Phone oldPhone = em.createQuery("SELECT ph FROM Phone ph WHERE ph.person.id = :id AND ph.number = :number", Phone.class)
+                        .setParameter("id", newPerson.getId())
+                        .setParameter("number", phone.getNumber())
+                        .getSingleResult();
+                phone.setId(oldPhone.getId());
+                em.merge(phone);
+            } catch (Exception e) {
+                em.persist(phone);
+            }
+        });
+        return newPhones;
     }
 
     public List<HobbyDTO> getAllHobbies() {
