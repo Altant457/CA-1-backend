@@ -103,7 +103,6 @@ class APIResourceTest {
         h3 = new Hobby("c", "c", "c", "c");
 
         p1.setAddress(a2);
-        p3.setAddress(a1);
         p2.setAddress(a1);
         p3.setAddress(a1);
         p3.addHobbytoHobbySet(h1);
@@ -194,7 +193,7 @@ class APIResourceTest {
         personDTOS =
                 given()
                         .contentType("application/json")
-                        .pathParam("zipCode", p2.getAddress().getCityInfo().getZipCode())
+                        .pathParam("zipCode", a1.getCityInfo().getZipCode())
                         .when()
                         .get("ca1/person/city/{zipCode}")
                         .then()
@@ -203,7 +202,7 @@ class APIResourceTest {
                         .extract().body().jsonPath().getList("all", PersonDTO.class);
 
 
-        assertThat(personDTOS, containsInAnyOrder(p2DTO, p3DTO, p1DTO));
+        assertThat(personDTOS, containsInAnyOrder(p2DTO, p3DTO));
 
 //        List<FullPersonDTO> fullPersonDTOList = new ArrayList<>();
 //                personDTOS.forEach(personDTO -> fullPersonDTOList.add(new Person(PersonDTO)));
