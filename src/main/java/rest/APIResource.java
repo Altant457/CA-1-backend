@@ -53,8 +53,9 @@ public class APIResource {
     @Produces({MediaType.APPLICATION_JSON})
     public String getPersonsByHobby(@PathParam("hobbyname") String hobbyname) {
         try {
-            PersonsDTO personsDTO = new PersonsDTO(FACADE.getPersonsByHobby(hobbyname));
-            return GSON.toJson(personsDTO);
+            List<FullPersonDTO> fullPersonDTOList = FACADE.getPersonsByHobby(hobbyname);
+//            System.out.println(GSON.toJson(fullPersonDTOList));
+            return GSON.toJson(fullPersonDTOList);
         } catch (Exception e) {
             throw new WebApplicationException(String.format("No hobby with name \"%s\" found", hobbyname), 404);
         }

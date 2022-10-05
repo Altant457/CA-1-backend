@@ -47,13 +47,14 @@ public class APIFacade {
 
     }
 
-    public List<PersonDTO> getPersonsByHobby(String hobbyName){
+    public List<FullPersonDTO> getPersonsByHobby(String hobbyName){
         EntityManager em = getEntityManager();
         TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbySet h WHERE h.name = :hobbyName", Person.class);
         query.setParameter("hobbyName", hobbyName);
-        List<PersonDTO> personDTOList = PersonDTO.getDTOList(query.getResultList());
+        List<FullPersonDTO> fullPersonDTOList = FullPersonDTO.getDTOList(query.getResultList());
+        System.out.println("udskrift af dto fra facade" +fullPersonDTOList);
         em.close();
-        return personDTOList;
+        return fullPersonDTOList;
     }
 
     public List<PersonDTO> getAllFromCity(String zipCode) {
