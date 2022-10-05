@@ -105,8 +105,10 @@ class APIResourceTest {
         p1.setAddress(a2);
         p3.setAddress(a1);
         p2.setAddress(a1);
+        p3.setAddress(a1);
         p3.addHobbytoHobbySet(h1);
         p3.addPhone(ph1);
+
 
         p1.addHobbytoHobbySet(h1);
         p2.addHobbytoHobbySet(h2);
@@ -200,8 +202,12 @@ class APIResourceTest {
                         .statusCode(HttpStatus.OK_200.getStatusCode())
                         .extract().body().jsonPath().getList("all", PersonDTO.class);
 
-        assertThat(personDTOS, containsInAnyOrder(p2DTO, p3DTO));
 
+        assertThat(personDTOS, containsInAnyOrder(p2DTO, p3DTO, p1DTO));
+
+//        List<FullPersonDTO> fullPersonDTOList = new ArrayList<>();
+//                personDTOS.forEach(personDTO -> fullPersonDTOList.add(new Person(PersonDTO)));
+//        assertThat(personDTOS, containsInAnyOrder(fp2DTO, fp3DTO, fp1DTO));
 
     }
 
