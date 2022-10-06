@@ -138,7 +138,7 @@ public class APIFacade {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            List<Hobby> hobbies = em.createQuery("SELECT h FROM Hobby h", Hobby.class)
+            List<Hobby> hobbies = em.createQuery("SELECT h FROM Hobby h ORDER BY h.name ASC", Hobby.class)
                             .getResultList();
             em.getTransaction().commit();
             return HobbyDTOs.makeDTOlist(hobbies);
