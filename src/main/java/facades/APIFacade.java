@@ -182,6 +182,18 @@ public class APIFacade {
         return p;
     }
 
+    public HobbyDTO getHobbyData(Long id) {
+        EntityManager em = getEntityManager();
+        try {
+            Hobby hobbyWtihData = em.createQuery("SELECT h FROM Hobby h WHERE h.id = :id", Hobby.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+            return new HobbyDTO(hobbyWtihData);
+        } finally {
+            em.close();
+        }
+    }
+
 
     //public void deletePerson(FullPersonDTO fullPersonDTO) {
     public void deletePerson(Long id) {
