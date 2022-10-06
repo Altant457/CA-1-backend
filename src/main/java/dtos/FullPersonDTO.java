@@ -1,5 +1,6 @@
 package dtos;
 
+import entities.CityInfo;
 import entities.Hobby;
 import entities.Person;
 import entities.Phone;
@@ -259,6 +260,11 @@ public class FullPersonDTO implements Serializable {
         public CityInfoDTO(String zipCode, String city) {
             this.zipCode = zipCode;
             this.city = city;
+        }
+
+        public CityInfoDTO(CityInfo cityInfo) {
+            this.zipCode = cityInfo.getZipCode();
+            this.city = cityInfo.getCity();
         }
     }
 }

@@ -89,6 +89,18 @@ public class APIResource {
         }
     }
 
+    @GET
+    @Path("city/{zipcode}")
+    @Produces("application/json")
+    public String getCity(@PathParam("zipcode") String zipCode) {
+        try {
+            FullPersonDTO.CityInfoDTO cityInfoDTO = FACADE.getCityData(zipCode);
+            return GSON.toJson(cityInfoDTO);
+        } catch (Exception e) {
+            throw new WebApplicationException(String.format("No city with zipcode \"%s\" found", zipCode), 404);
+        }
+    }
+
 //    ca1/zipcodes
 //    Get a list of all zip codes in Denmark
 // should the path be changed? It seems weirdly named, when the return value is a list, not a number

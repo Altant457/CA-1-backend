@@ -1,10 +1,7 @@
 package facades;
 
 import dtos.*;
-import entities.Address;
-import entities.Hobby;
-import entities.Person;
-import entities.Phone;
+import entities.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -185,10 +182,18 @@ public class APIFacade {
     public HobbyDTO getHobbyData(Long id) {
         EntityManager em = getEntityManager();
         try {
-            Hobby hobbyWtihData = em.createQuery("SELECT h FROM Hobby h WHERE h.id = :id", Hobby.class)
-                    .setParameter("id", id)
-                    .getSingleResult();
+            Hobby hobbyWtihData = em.find(Hobby.class, id);
             return new HobbyDTO(hobbyWtihData);
+        } finally {
+            em.close();
+        }
+    }
+
+    public FullPersonDTO.CityInfoDTO getCityData(String zipCode) {
+        EntityManager em = getEntityManager();
+        try {
+            CityInfo cityInfo = em.find(CityInfo.class, zipCode);
+            return new FullPersonDTO.CityInfoDTO(cityInfo);
         } finally {
             em.close();
         }
