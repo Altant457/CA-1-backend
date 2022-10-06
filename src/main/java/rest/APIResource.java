@@ -111,7 +111,7 @@ public class APIResource {
     }
 
     @GET
-    @Path("hobby/{hobbyID}")
+    @Path("hobby/id/{hobbyID}")
     @Produces("application/json")
     public String getHobbyData(@PathParam("hobbyID") Long hobbyID) {
         HobbyDTO hobbyDTO = FACADE.getHobbyData(hobbyID);
