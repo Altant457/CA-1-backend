@@ -68,8 +68,8 @@ public class APIResource {
     @Produces("application/json")
     public String getAllFromCity(@PathParam("zipCode") String zipCode) {
         try {
-            PersonsDTO personsDTO = new PersonsDTO(FACADE.getAllFromCity(zipCode));
-            return GSON.toJson(personsDTO);
+            List<FullPersonDTO> fullPersonDTOS = FACADE.getAllFromCity(zipCode);
+            return GSON.toJson(fullPersonDTOS);
         } catch (Exception e) {
             throw new WebApplicationException(String.format("No city with zipcode \"%s\" found", zipCode), 404);
         }

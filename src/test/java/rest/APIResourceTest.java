@@ -189,7 +189,7 @@ class APIResourceTest {
 
     @Test
     void getAllFromCity() {
-        List<PersonDTO> personDTOS;
+        List<FullPersonDTO> personDTOS;
         personDTOS =
                 given()
                         .contentType("application/json")
@@ -199,10 +199,10 @@ class APIResourceTest {
                         .then()
                         .assertThat()
                         .statusCode(HttpStatus.OK_200.getStatusCode())
-                        .extract().body().jsonPath().getList("all", PersonDTO.class);
+                        .extract().body().jsonPath().getList("", FullPersonDTO.class);
 
 
-        assertThat(personDTOS, containsInAnyOrder(p2DTO, p3DTO));
+        assertThat(personDTOS, containsInAnyOrder(fp2DTO, fp3DTO));
 
 //        List<FullPersonDTO> fullPersonDTOList = new ArrayList<>();
 //                personDTOS.forEach(personDTO -> fullPersonDTOList.add(new Person(PersonDTO)));

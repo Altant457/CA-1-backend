@@ -57,10 +57,11 @@ public class APIFacade {
         return fullPersonDTOList;
     }
 
-    public List<PersonDTO> getAllFromCity(String zipCode) {
+    public List<FullPersonDTO> getAllFromCity(String zipCode) {
         EntityManager em = getEntityManager();
         TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.address.cityInfo.zipCode = :zipCode", Person.class);
-        List<PersonDTO> personDTOList = PersonDTO.getDTOList(query.setParameter("zipCode", zipCode).getResultList());
+        query.setParameter("zipCode", zipCode);
+        List<FullPersonDTO> personDTOList = FullPersonDTO.getDTOList(query.getResultList());
         em.close();
         return personDTOList;
 

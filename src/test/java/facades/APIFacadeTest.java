@@ -116,8 +116,8 @@ class APIFacadeTest {
 
     @Test
     void getAllFromCity() {
-        List<PersonDTO> actual = facade.getAllFromCity(a1.getCityInfo().getZipCode());
-        assertThat(actual, hasItems(p3DTO, p2DTO));
+        List<FullPersonDTO> actual = facade.getAllFromCity(a1.getCityInfo().getZipCode());
+        assertThat(actual, hasItems(fp3DTO, fp2DTO));
     }
 
     @Test
