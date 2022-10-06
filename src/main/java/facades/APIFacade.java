@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.WebApplicationException;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -179,11 +180,17 @@ public class APIFacade {
         return p;
     }
 
-    public HobbyDTO getHobbyData(Long id) {
+    public List<HobbyDTO> getHobbyData(List<Long> hobbyIDs) {
         EntityManager em = getEntityManager();
         try {
-            Hobby hobbyWtihData = em.find(Hobby.class, id);
-            return new HobbyDTO(hobbyWtihData);
+            List<HobbyDTO> hobbyDTOList = new ArrayList<>();
+            hobbyIDs.forEach(hobbyID -> {
+                Hobby hobbyWithData = em.find(Hobby.class, hobbyID);
+                hobbyDTOList.add(new HobbyDTO(hobbyWithData));
+            });
+            return hobbyDTOList;
+//            Hobby hobbyWtihData = em.find(Hobby.class, id);
+//            return new HobbyDTO(hobbyWtihData);
         } finally {
             em.close();
         }

@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import dtos.*;
 import entities.Person;
 import facades.APIFacade;
@@ -12,6 +13,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -122,12 +124,17 @@ public class APIResource {
         return GSON.toJson(hobbies);
     }
 
-    @GET
-    @Path("hobby/id/{hobbyID}")
+    //this endpoint is technically a POST, but functionally it is a GET
+    @POST
+    @Path("hobby/id/")
     @Produces("application/json")
-    public String getHobbyData(@PathParam("hobbyID") Long hobbyID) {
-        HobbyDTO hobbyDTO = FACADE.getHobbyData(hobbyID);
-        return GSON.toJson(hobbyDTO);
+    @Consumes("application/json")
+    public String getHobbyData(String hobbyIDsJSON) {
+//        Type listOfMyClassObject = new TypeToken<ArrayList<MyClass>>() {}.getType();
+        Type listOfLong = new TypeToken<ArrayList<Long>>() {}.getType(); // cursed
+        List<Long> hobbyIDs = GSON.fromJson(hobbyIDsJSON, listOfLong);
+        List<HobbyDTO> hobbyDTOs = FACADE.getHobbyData(hobbyIDs);
+        return GSON.toJson(hobbyDTOs);
     }
 
 //    ca1/person
