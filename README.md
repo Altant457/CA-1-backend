@@ -1,4 +1,4 @@
-### 3. semester CA-1 Backend for group Bornholm B
+# 3. semester CA-1 Backend for group Bornholm B
 
 ## API Doc
 The API doc is deployed to the server [here](https://altantthewired.me/tomcat/CA1)
